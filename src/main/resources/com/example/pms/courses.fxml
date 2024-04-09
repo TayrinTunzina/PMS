@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="TOP_CENTER" prefHeight="703.0" prefWidth="871.0" spacing="20.0" style="-fx-background-color: #f0f2f5;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pms.WinnersController">
+   <AnchorPane cacheShape="false" prefHeight="58.0" prefWidth="1315.0" styleClass="logo-container" stylesheets="@../../../style/newsfeed.css">
+      <children>
+         <ImageView fitHeight="56.0" fitWidth="177.0" layoutX="1.0" layoutY="3.0" nodeOrientation="INHERIT" pickOnBounds="true" styleClass="logo">
+            <image>
+               <Image url="@../../../img/logo.png" />
+            </image>
+            <effect>
+               <Blend />
+            </effect>
+         </ImageView>
+         <Pane layoutX="776.0" prefHeight="62.0" prefWidth="136.0" AnchorPane.rightAnchor="0.0">
+            <children>
+               <Button alignment="CENTER" contentDisplay="CENTER" layoutX="9.0" layoutY="13.0" mnemonicParsing="false" onAction="#newsfeed" prefHeight="38.0" prefWidth="118.0" stylesheets="@../../../style/newsfeed.css" text="Back">
+                  <font>
+                     <Font name="Arial Bold" size="16.0" />
+                  </font>
+                  <cursor>
+                     <Cursor fx:constant="HAND" />
+                  </cursor>
+                  <styleClass>
+                     <String fx:value="navbar-button" />
+                     <String fx:value="navbar-button:hover" />
+                  </styleClass>
+                  <textFill>
+                     <LinearGradient endX="0.15909090863935876" endY="0.6666666775038748" startX="0.17045454093904205" startY="0.06060600280761719">
+                        <stops>
+                           <Stop>
+                              <color>
+                                 <Color red="1.0" green="1.0" blue="1.0" />
+                              </color>
+                           </Stop>
+                           <Stop offset="1.0">
+                              <color>
+                                 <Color />
+                              </color>
+                           </Stop>
+                        </stops>
+                     </LinearGradient>
+                  </textFill>
+               </Button>
+            </children>
+         </Pane>
+      </children>
+   </AnchorPane>
+
+    <!-- GridPane for Cards -->
+    <GridPane alignment="TOP_CENTER" hgap="40.0" prefHeight="621.0" prefWidth="827.0" style="-fx-padding: 20px;" vgap="30.0">
+
+        <!-- First Row -->
+        <VBox>
+            <VBox alignment="TOP_CENTER" prefHeight="275.0" prefWidth="210.0" style="-fx-padding: 20px; -fx-border-radius: 10px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);" styleClass="card3" stylesheets="@../../../style/newsfeed.css">
+            <Label text="AOOP Laboratory">
+               <font>
+                  <Font name="Arial Bold" size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin></Label>
+            <ImageView fitHeight="112.0" fitWidth="143.0" pickOnBounds="true">
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+               <image>
+                  <Image url="@../../../img/png7.png" />
+               </image>
+            </ImageView>
+                <ComboBox promptText="Select Trimester" style="-fx-font-size: 14px; -fx-padding: 5px;" styleClass="comboBox2" />
+                <Button alignment="CENTER" onAction="#viewWinners" style="-fx-background-color: #60717c; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 5px 10px;" text="View">
+               <font>
+                  <Font name="Arial" size="12.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </Button>
+            </VBox>
+        </VBox>
+
+        <VBox GridPane.columnIndex="1">
+            <VBox alignment="TOP_CENTER" prefHeight="275.0" prefWidth="210.0" style="-fx-padding: 20px; -fx-border-radius: 10px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);" styleClass="card3" stylesheets="@../../../style/newsfeed.css">
+            <Label text="DBMS Laboratory">
+               <font>
+                  <Font name="Arial Bold" size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </Label>
+            <ImageView fitHeight="112.0" fitWidth="147.0" pickOnBounds="true">
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+               <image>
+                  <Image url="@../../../img/png3.png" />
+               </image>
+            </ImageView>
+                <ComboBox promptText="Select Trimester" style="-fx-font-size: 14px; -fx-padding: 5px;" styleClass="comboBox2" />
+                <Button alignment="CENTER" onAction="#viewWinners" style="-fx-background-color: #60717c; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 5px 10px;" text="View">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="Arial" size="12.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin></Button>
+            </VBox>
+        </VBox>
+
+        <VBox GridPane.columnIndex="2">
+            <VBox alignment="TOP_CENTER" prefHeight="275.0" prefWidth="210.0" style="-fx-padding: 20px; -fx-border-radius: 10px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);" styleClass="card3" stylesheets="@../../../style/newsfeed.css">
+            <Label text="SAD Laboratory">
+               <font>
+                  <Font name="Arial Bold" size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </Label>
+            <ImageView fitHeight="112.0" fitWidth="123.0" pickOnBounds="true">
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+               <image>
+                  <Image url="@../../../img/png6.png" />
+               </image>
+            </ImageView>
+                <ComboBox promptText="Select Trimester" style="-fx-font-size: 14px; -fx-padding: 5px;" styleClass="comboBox2" />
+                <Button alignment="CENTER" onAction="#viewWinners" style="-fx-background-color: #60717c; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 5px 10px;" text="View">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin></Button>
+            </VBox>
+        </VBox>
+
+        <!-- Second Row -->
+        <VBox GridPane.rowIndex="1">
+            <VBox alignment="TOP_CENTER" prefHeight="275.0" prefWidth="210.0" style="-fx-padding: 20px; -fx-border-radius: 10px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);" styleClass="card3" stylesheets="@../../../style/newsfeed.css">
+            <Label text="Electronics Laboratory">
+               <font>
+                  <Font name="Arial Bold" size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </Label>
+            <ImageView fitHeight="112.0" fitWidth="119.0" pickOnBounds="true">
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+               <image>
+                  <Image url="@../../../img/png2.png" />
+               </image>
+            </ImageView>
+                <ComboBox promptText="Select Trimester" style="-fx-font-size: 14px; -fx-padding: 5px;" styleClass="comboBox2" />
+                <Button alignment="CENTER" onAction="#viewWinners" style="-fx-background-color: #60717c; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 5px 10px;" text="View">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin></Button>
+            </VBox>
+        </VBox>
+
+        <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <VBox alignment="TOP_CENTER" prefHeight="275.0" prefWidth="210.0" style="-fx-padding: 20px; -fx-border-radius: 10px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);" styleClass="card3" stylesheets="@../../../style/newsfeed.css">
+            <Label text="Microprocessors  Lab">
+               <font>
+                  <Font name="Arial Bold" size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </Label>
+            <ImageView fitHeight="112.0" fitWidth="136.0" pickOnBounds="true">
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+               <image>
+                  <Image url="@../../../img/png5.png" />
+               </image>
+            </ImageView>
+                <ComboBox promptText="Select Trimester" style="-fx-font-size: 14px; -fx-padding: 5px;" styleClass="comboBox2" />
+                <Button alignment="CENTER" onAction="#viewWinners" style="-fx-background-color: #60717c; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 5px 10px;" text="View">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin></Button>
+            </VBox>
+        </VBox>
+
+        <VBox GridPane.columnIndex="2" GridPane.rowIndex="1">
+            <VBox alignment="TOP_CENTER" prefHeight="275.0" prefWidth="210.0" style="-fx-padding: 20px; -fx-border-radius: 10px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);" styleClass="card3" stylesheets="@../../../style/newsfeed.css">
+            <Label text="SE Laboratory">
+               <font>
+                  <Font name="Arial Bold" size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </Label>
+            <ImageView fitHeight="112.0" fitWidth="131.0" pickOnBounds="true">
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+               <image>
+                  <Image url="@../../../img/png1.png" />
+               </image>
+            </ImageView>
+                <ComboBox promptText="Select Trimester" style="-fx-font-size: 14px; -fx-padding: 5px;" styleClass="comboBox2" />
+                <Button alignment="CENTER" onAction="#viewWinners" style="-fx-background-color: #60717c; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 5px 10px;" text="View">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin></Button>
+            </VBox>
+        </VBox>
+      <columnConstraints>
+         <ColumnConstraints />
+         <ColumnConstraints />
+         <ColumnConstraints />
+      </columnConstraints>
+      <rowConstraints>
+         <RowConstraints />
+         <RowConstraints />
+      </rowConstraints>
+      <VBox.margin>
+         <Insets />
+      </VBox.margin>
+
+    </GridPane>
+
+</VBox>

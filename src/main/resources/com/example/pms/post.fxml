@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="436.0" prefWidth="600.0" styleClass="card1" stylesheets="@../../../style/newsfeed.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pms.PostController">
+   <children>
+      <HBox alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="552.0">
+         <children>
+            <HBox alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="83.0" spacing="5.0">
+               <children>
+                  <ImageView fx:id="deleteIcon" fitHeight="16.0" fitWidth="20.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../img/delete.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </children>
+            </HBox>
+         </children>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </HBox>
+      <Label fx:id="postText" prefHeight="17.0" prefWidth="556.0">
+         <VBox.margin>
+            <Insets bottom="4.0" />
+         </VBox.margin>
+         <font>
+            <Font name="Arial Bold" size="13.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="postImage" fitHeight="313.0" fitWidth="569.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../img/post1.jpg" />
+         </image>
+         <VBox.margin>
+            <Insets left="5.0" right="5.0" top="2.0" />
+         </VBox.margin>
+      </ImageView>
+      <Pane prefHeight="2.0" prefWidth="600.0" style="-fx-background-color: #F0F2F5;">
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+      </Pane>
+      <HBox alignment="CENTER" prefHeight="43.0" prefWidth="600.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="57.0" prefWidth="234.0" spacing="10.0">
+               <children>
+                  <ImageView fitHeight="22.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../img/time-left.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="date" prefHeight="30.0" prefWidth="135.0" text="4 DAYS AGO">
+                     <font>
+                        <Font name="Arial" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="62.0" prefWidth="390.0">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="31.0" prefWidth="108.0" spacing="5.0">
+                     <children>
+                        <ImageView fitHeight="38.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../img/heart.png" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="CLOSED_HAND" />
+                           </cursor>
+                        </ImageView>
+                        <Label fx:id="likes" prefHeight="30.0" prefWidth="40.0" text="20">
+                           <font>
+                              <Font name="Arial" size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+         <padding>
+            <Insets top="10.0" />
+         </padding>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="10.0" top="10.0" />
+   </padding>
+</VBox>
