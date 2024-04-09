@@ -25,6 +25,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -86,7 +88,6 @@ public class NewsfeedController implements Initializable {
         }
 
         // Insert the post data into the database
-        // Insert the post data into the database
         try (FileInputStream fis = new FileInputStream(new File(filePath))) {
             String query = "INSERT INTO post (post_image, content) VALUES (?, ?)";
             PreparedStatement statement = connection.prepareStatement(query);
@@ -128,12 +129,29 @@ public class NewsfeedController implements Initializable {
     }
 
     private void refreshPage() {
-        // You need to reload the data or reset the UI components here
-        // For example, you can clear the text fields and reset the file chooser
-        postContentTextField.clear();
-        taFile.clear();
-        // You may also reload the list of posts or update the UI in any other way
+        // Clear existing posts from UI
+        posted.getChildren().clear();
+
+        // Reload the list of posts
+        posts.clear();
+        posts.addAll(data()); // Fetch updated list of posts from the database
+
+        // Update the UI with the refreshed list of posts
+        try {
+            for (Post post : posts) {
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("post.fxml"));
+
+                VBox vBox = fxmlLoader.load();
+                PostController postController = fxmlLoader.getController();
+                postController.setData(post);
+                posted.getChildren().add(vBox);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
 
 
     public void setLoggedInUserId(String userId) {
@@ -185,6 +203,8 @@ public class NewsfeedController implements Initializable {
         System.out.println("Received user ID in NewsfeedController: " + loggedInUserId);
         displayUserDetails();
 
+        UserService.setLoggedInUserId(loggedInUserId); // Set the loggedInUserId using UserService
+
         posts = new ArrayList<>(data());
 
         try {
@@ -202,28 +222,38 @@ public class NewsfeedController implements Initializable {
         }
     }
 
-    public List<Post> data(){
+    public List<Post> data() {
         List<Post> ls = new ArrayList<>();
-        Post post;
 
-        post = new Post();
-        post.setPostText("CSE project show 23");
-        post.setPostImageSrc("/img/post2.jpg");
-        post.setDates("4 DAYS AGO");
-        post.setNbLikes("20");
-//        post.setNbComments("5");
-        ls.add(post);
+        try {
+            String query = "SELECT * FROM post ORDER BY created DESC";
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
 
-        post = new Post();
-        post.setPostText("CSE project show 22");
-        post.setPostImageSrc("/img/post1.jpg");
-        post.setDates("1 WEEK AGO");
-        post.setNbLikes("55");
-//        post.setNbComments("10");
-        ls.add(post);
+            while (resultSet.next()) {
+                Post post = new Post();
+                post.setPostText(resultSet.getString("content"));
+                post.setPostImageBlob(resultSet.getBlob("post_image"));
+
+                // Parse the date string using a DateTimeFormatter
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                LocalDateTime dateTime = LocalDateTime.parse(resultSet.getString("created"), formatter);
+                post.setDates(dateTime);
+
+                post.setLikeCount(resultSet.getInt("like_count"));
+                ls.add(post);
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle the exception
+        }
 
         return ls;
     }
+
 
     private Stage stage;
     private Scene scene;

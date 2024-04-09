@@ -75,7 +75,7 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="31.0" prefWidth="108.0" spacing="5.0">
                      <children>
-                        <ImageView fitHeight="38.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="likeIcon" fitHeight="38.0" fitWidth="31.0" onMouseClicked="#handleLikeButtonClick" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../../img/heart.png" />
                            </image>
@@ -83,7 +83,7 @@
                               <Cursor fx:constant="CLOSED_HAND" />
                            </cursor>
                         </ImageView>
-                        <Label fx:id="likes" prefHeight="30.0" prefWidth="40.0" text="20">
+                        <Label fx:id="likeCountLabel" prefHeight="30.0" prefWidth="40.0" text="20">
                            <font>
                               <Font name="Arial" size="16.0" />
                            </font>

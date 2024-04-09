@@ -116,8 +116,16 @@ public class LoginController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
         Parent root = loader.load();
         NewsfeedController controller = loader.getController();
-        controller.setLoggedInUserId(loggedInUserId); // Pass logged-in user ID to NewsfeedController
-        controller.displayUserDetails(); // Call displayUserDetails directly
+
+        // Set the logged-in user ID using UserService
+        UserService.setLoggedInUserId(loggedInUserId);
+
+        // Pass logged-in user ID to NewsfeedController using UserService
+        controller.setLoggedInUserId(loggedInUserId);
+
+        // Call displayUserDetails directly
+        controller.displayUserDetails();
+
         Stage stage = (Stage) txt_id.getScene().getWindow();
         stage.setScene(new Scene(root));
         stage.show();

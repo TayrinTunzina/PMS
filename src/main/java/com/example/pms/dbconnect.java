@@ -12,7 +12,7 @@ public class dbconnect {
     private static final String USER = "root";
     private static final String PASSWORD = "";
 
-    private static Connection connection;
+    public static Connection connection;
 
     private dbconnect() {
         // Private constructor to prevent instantiation
