@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -16,6 +17,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -54,6 +57,12 @@ public class NewsfeedController implements Initializable {
     private TextField taFile;
 
     @FXML
+    private Button postButton;
+
+    @FXML
+    private TextField postContentTextField;
+
+    @FXML
     private void handlechoosefilebtn(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose File");
@@ -63,6 +72,69 @@ public class NewsfeedController implements Initializable {
 //            taFile.appendText(file.getAbsolutePath());
         }
     }
+
+    @FXML
+    private void handlePostButton(ActionEvent event) {
+        String postContent = postContentTextField.getText();
+        String filePath = taFile.getText();
+
+        // Validate that both content and file path are provided
+        if (postContent.isEmpty() || filePath.isEmpty()) {
+            // Show error message to the user
+            // For example, you can use ErrorMassageLabel.setText("Please enter post content and choose a file.");
+            return;
+        }
+
+        // Insert the post data into the database
+        // Insert the post data into the database
+        try (FileInputStream fis = new FileInputStream(new File(filePath))) {
+            String query = "INSERT INTO post (post_image, content) VALUES (?, ?)";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setBinaryStream(1, fis, new File(filePath).length()); // Set the image data as a BLOB
+            statement.setString(2, postContent);
+            int rowsInserted = statement.executeUpdate();
+
+            if (rowsInserted > 0) {
+                // Post inserted successfully
+                // Show a success message to the user
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Post inserted successfully.");
+                // Refresh the page
+                refreshPage();
+            } else {
+                // Failed to insert the post
+                // Show an error message to the user
+                showAlert(Alert.AlertType.ERROR, "Error", "Failed to insert the post.");
+            }
+
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle the exception (e.g., display an error message)
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            // Handle file not found exception
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle IO exception
+        }
+    }
+
+    private void showAlert(Alert.AlertType alertType, String title, String content) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    private void refreshPage() {
+        // You need to reload the data or reset the UI components here
+        // For example, you can clear the text fields and reset the file chooser
+        postContentTextField.clear();
+        taFile.clear();
+        // You may also reload the list of posts or update the UI in any other way
+    }
+
 
     public void setLoggedInUserId(String userId) {
         loggedInUserId = userId;
