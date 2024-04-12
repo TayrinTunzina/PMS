@@ -19,8 +19,11 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -28,16 +31,19 @@ import java.util.ResourceBundle;
 
 public class LabController implements Initializable {
     @FXML
-    private VBox chosenFruitCard;
+    private VBox chosenCompCard;
 
     @FXML
-    private Label fruitNameLable;
+    private Label compNameLabel;
 
     @FXML
-    private Label fruitPriceLabel;
+    private Label compPriceLabel;
 
     @FXML
-    private ImageView fruitImg;
+    private Label sellerId;
+
+    @FXML
+    private ImageView compImg;
 
     @FXML
     private ScrollPane scroll;
@@ -45,118 +51,37 @@ public class LabController implements Initializable {
     @FXML
     private GridPane grid;
 
-    private List<Lab> fruits = new ArrayList<>();
+    private Connection connection;
+
+    private List<Lab> components = new ArrayList<>();
     private Image image;
     private MyListener myListener;
 
-    private List<Lab> getData() {
-        List<Lab> fruits = new ArrayList<>();
-        Lab fruit;
-
-        fruit = new Lab();
-        fruit.setName("Arduino Uno");
-        fruit.setPrice(200);
-        fruit.setImgSrc("/img/arduino_uno.png");
-        fruit.setColor("6A7324");
-        fruits.add(fruit);
-
-        fruit = new Lab();
-        fruit.setName("RFID Module");
-        fruit.setPrice(80);
-        fruit.setImgSrc("/img/RFID.png");
-        fruit.setColor("A7745B");
-        fruits.add(fruit);
-
-        fruit = new Lab();
-        fruit.setName("Breadboard");
-        fruit.setPrice(90);
-        fruit.setImgSrc("/img/breadboard.png");
-        fruit.setColor("F16C31");
-        fruits.add(fruit);
-
-        fruit = new Lab();
-        fruit.setName("Servo Motor");
-        fruit.setPrice(20);
-        fruit.setImgSrc("/img/servo_motor.png");
-        fruit.setColor("291D36");
-        fruits.add(fruit);
-
-        fruit = new Lab();
-        fruit.setName("Jumper Wires");
-        fruit.setPrice(40);
-        fruit.setImgSrc("/img/jumper_wires.png");
-        fruit.setColor("22371D");
-        fruits.add(fruit);
-
-        fruit = new Lab();
-        fruit.setName("Resistor");
-        fruit.setPrice(20);
-        fruit.setImgSrc("/img/resistor.png");
-        fruit.setColor("FB5D03");
-        fruits.add(fruit);
-
-        fruit = new Lab();
-        fruit.setName("Capacitor");
-        fruit.setPrice(60);
-        fruit.setImgSrc("/img/capacitors.png");
-        fruit.setColor("80080C");
-        fruits.add(fruit);
-
-        fruit = new Lab();
-        fruit.setName("LCD Display");
-        fruit.setPrice(100);
-        fruit.setImgSrc("/img/I2C-LCD.png");
-        fruit.setColor("FFB605");
-        fruits.add(fruit);
-
-        fruit = new Lab();
-        fruit.setName("I2C Module");
-        fruit.setPrice(200);
-        fruit.setImgSrc("/img/I2c-Display-Module.png");
-        fruit.setColor("5F060E");
-        fruits.add(fruit);
-
-        fruit = new Lab();
-        fruit.setName("LED Lights");
-        fruit.setPrice(20);
-        fruit.setImgSrc("/img/LEDs.png");
-        fruit.setColor("E7C00F");
-        fruits.add(fruit);
-
-        return fruits;
-    }
-
-    private void setChosenFruit(Lab fruit) {
-        fruitNameLable.setText(fruit.getName());
-        fruitPriceLabel.setText(LabApplication.CURRENCY + fruit.getPrice());
-        image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(fruit.getImgSrc())));
-        fruitImg.setImage(image);
-        chosenFruitCard.setStyle("-fx-background-color: #" + fruit.getColor() + ";\n" +
-                "    -fx-background-radius: 30;");
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        fruits.addAll(getData());
-        if (!fruits.isEmpty()) {
-            setChosenFruit(fruits.getFirst());
-            myListener = new MyListener() {
-                @Override
-                public void onClickListener(Lab fruit) {
-                    setChosenFruit(fruit);
-                }
-            };
+        // Establish database connection
+        connection = dbconnect.getConnection();
+
+        // Fetch components from the database
+        components = fetchComponentsFromDatabase();
+
+        // Set up the chosen component and listener
+        if (!components.isEmpty()) {
+            setChosenComponent(components.get(0));
+            myListener = component -> setChosenComponent(component);
         }
+
         int column = 0;
         int row = 1;
         try {
-            for (Lab fruit : fruits) {
+            for (Lab component : components) {
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(getClass().getResource("component.fxml"));
                 AnchorPane anchorPane = fxmlLoader.load();
 
                 ComponentController componentController = fxmlLoader.getController();
-                componentController.setData(fruit, myListener);
+                componentController.setData(component, myListener);
 
                 if (column == 3) {
                     column = 0;
@@ -181,18 +106,107 @@ public class LabController implements Initializable {
         }
     }
 
+    private List<Lab> fetchComponentsFromDatabase() {
+        List<Lab> components = new ArrayList<>();
+
+        // Example: Fetch components from a database
+        try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM components");
+             ResultSet resultSet = statement.executeQuery()) {
+
+            int colorIndex = 0;
+            String[] colorScheme = {"6A7324", "A7745B", "F16C31", "291D36", "22371D", "FB5D03", "80080C", "FFB605", "5F060E", "E7C00F"}; // Provided color scheme
+
+            while (resultSet.next()) {
+                Lab component = new Lab();
+                component.setSellerId(resultSet.getString("s_id"));
+                component.setName(resultSet.getString("name"));
+                component.setPrice(resultSet.getString("price"));
+                // Retrieve the image data as a Blob
+                Blob blob = resultSet.getBlob("image");
+                if (blob != null) {
+                    try (InputStream inputStream = blob.getBinaryStream()) {
+                        Image image = new Image(inputStream);
+                        component.setImage(image);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                // Assign a color to the component
+                component.setColor(colorScheme[colorIndex % colorScheme.length]);
+                colorIndex++;
+                components.add(component);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return components;
+    }
+
+
+
+    private void setChosenComponent(Lab component) {
+        compNameLabel.setText(component.getName());
+        compPriceLabel.setText(LabApplication.CURRENCY + component.getPrice());
+        sellerId.setText(component.getSellerId());
+        Image image = component.getImage();
+        if (image != null) {
+            compImg.setImage(image);
+        } else {
+            // Handle case when image is not available
+            // For example, set a default image
+            // compImg.setImage(defaultImage);
+        }
+
+        // Assign colors to components
+        String color = component.getColor();
+        if (color != null && !color.isEmpty()) {
+            chosenCompCard.setStyle("-fx-background-color: #" + color + ";\n" +
+                    "    -fx-background-radius: 30;");
+        } else {
+            // If color is not available, set a default background color
+            chosenCompCard.setStyle("-fx-background-color: #FFFFFF;\n" +
+                    "    -fx-background-radius: 30;");
+        }
+    }
+
+
+
+
     private Stage stage;
     private Scene scene;
     private Parent root;
 
     @FXML
-    void newsfeed(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("Newsfeed.fxml"));
+    void back(ActionEvent event) throws IOException {
+        String fxmlFile;
+        // Get the role of the logged-in user from UserService
+        String userRole = UserService.getLoggedInUserRole();
+
+        // Determine the appropriate FXML file based on the user role
+        switch (userRole) {
+            case "Admin":
+                fxmlFile = "Newsfeed.fxml";
+                break;
+            case "Student":
+                fxmlFile = "newsfeed_student.fxml";
+                break;
+            case "Faculty":
+                fxmlFile = "newsfeed_faculty.fxml";
+                break;
+            default:
+                // Handle unknown role
+                return;
+        }
+
+        // Load the FXML file and navigate to it
+        Parent root = FXMLLoader.load(getClass().getResource(fxmlFile));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
+
 
 }
 

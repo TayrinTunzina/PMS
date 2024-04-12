@@ -96,7 +96,11 @@ public class LoginController {
 
 
     private void redirectToDashboard(String userRole) throws IOException {
-        System.out.println("Redirecting to dashboard with user ID: " + loggedInUserId); // Add this line for debugging
+        // Set the logged-in user ID and role using UserService
+        UserService.setLoggedInUserId(loggedInUserId);
+        UserService.setLoggedInUserRole(userRole);
+
+        // Load the dashboard FXML file
         String fxmlFile;
         switch (userRole) {
             case "Admin":
@@ -117,19 +121,16 @@ public class LoginController {
         Parent root = loader.load();
         NewsfeedController controller = loader.getController();
 
-        // Set the logged-in user ID using UserService
-        UserService.setLoggedInUserId(loggedInUserId);
-
-        // Pass logged-in user ID to NewsfeedController using UserService
+        // Set the logged-in user ID in the NewsfeedController
         controller.setLoggedInUserId(loggedInUserId);
-
-        // Call displayUserDetails directly
-        controller.displayUserDetails();
 
         Stage stage = (Stage) txt_id.getScene().getWindow();
         stage.setScene(new Scene(root));
         stage.show();
     }
+
+
+
 
 
 }

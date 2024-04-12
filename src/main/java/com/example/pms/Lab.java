@@ -1,10 +1,33 @@
 package com.example.pms;
 
+import javafx.scene.image.Image;
+
 public class Lab {
     private String name;
     private String imgSrc;
-    private double price;
+    private String price;
     private String color;
+    private Image image;
+
+    private String sellerId;
+
+    private String email;
+
+    // Getters and setters for the email field
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
+    public Image getImage() {
+        return image;
+    }
 
     public String getName() {
         return this.name;
@@ -22,11 +45,11 @@ public class Lab {
         this.imgSrc = imgSrc;
     }
 
-    public double getPrice() {
+    public String getPrice() {
         return this.price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 
@@ -36,6 +59,14 @@ public class Lab {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public String getSellerId() {
+        return sellerId;
+    }
+
+    public void setSellerId(String sellerId) {
+        this.sellerId = sellerId;
     }
 }
 

@@ -13,8 +13,10 @@ public class LoginApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("Login.fxml")));
-        stage.setScene(new Scene(root));
+        FXMLLoader fxmlLoader = new FXMLLoader(NewsfeedController.class.getResource("Login.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 900, 600);
+        stage.setTitle("Login");
+        stage.setScene(scene);
         stage.show();
     }
 

@@ -115,7 +115,7 @@
                                     </HBox.margin>
                                 </ImageView>
 
-                                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="35.0" prefWidth="112.0" stylesheets="@../../../style/newsfeed.css" text="Post Component" textFill="WHITE">
+                                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#add_component" prefHeight="35.0" prefWidth="112.0" stylesheets="@../../../style/newsfeed.css" text="Post Component" textFill="WHITE">
                                     <font>
                                         <Font name="Arial Bold" size="12.0" />
                                     </font>

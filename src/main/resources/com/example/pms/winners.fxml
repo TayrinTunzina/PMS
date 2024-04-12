@@ -1,26 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <StackPane layoutX="150.0" layoutY="120.0" prefHeight="160.0" prefWidth="300.0">
+        <AnchorPane layoutX="224.0" layoutY="76.0" prefHeight="249.0" prefWidth="310.0" style="-fx-background-radius: 25; -fx-background-color: white;">
             <children>
-                <StackPane fx:id="frontPane">
-                    <children>
-                        <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#fafafa" height="160.0" stroke="BLACK" strokeType="INSIDE" width="300.0" />
-                    </children>
-                </StackPane>
-                <StackPane fx:id="backPane" style="-fx-background-color: #c0c0c0;">
-                    <children>
-                        <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#fafafa" height="160.0" stroke="BLACK" strokeType="INSIDE" width="300.0" />
-                    </children>
-                </StackPane>
+                <JFXTextField layoutX="72.0" layoutY="53.0" prefHeight="25.0" prefWidth="174.0" promptText="Enter Login">
+                    <focusColor>
+                        <LinearGradient endX="1.0" endY="1.0">
+                            <stops>
+                                <Stop>
+                                    <color>
+                                        <Color red="0.9803921580314636" green="0.8039215803146362" blue="0.40784314274787903" />
+                                    </color>
+                                </Stop>
+                                <Stop offset="1.0">
+                                    <color>
+                                        <Color red="0.9882352948188782" green="0.4627451002597809" blue="0.7019608020782471" />
+                                    </color>
+                                </Stop>
+                            </stops>
+                        </LinearGradient>
+                    </focusColor>
+                </JFXTextField>
+                <JFXTextField layoutX="72.0" layoutY="109.0" prefHeight="25.0" prefWidth="174.0" promptText="Enter Password">
+                    <focusColor>
+                        <LinearGradient endX="1.0" endY="1.0">
+                            <stops>
+                                <Stop>
+                                    <color>
+                                        <Color red="0.9803921580314636" green="0.8039215803146362" blue="0.40784314274787903" />
+                                    </color>
+                                </Stop>
+                                <Stop offset="1.0">
+                                    <color>
+                                        <Color red="0.9882352948188782" green="0.4627451002597809" blue="0.7019608020782471" />
+                                    </color>
+                                </Stop>
+                            </stops>
+                        </LinearGradient>
+                    </focusColor>
+                </JFXTextField>
+                <JFXButton buttonType="RAISED" layoutX="112.0" layoutY="176.0" prefHeight="41.0" prefWidth="87.0" styleClass="colorBackground" stylesheets="@color.css" text="Login" />
             </children>
-        </StackPane>
-        <Button fx:id="foldButton" layoutX="262.0" layoutY="294.0" mnemonicParsing="false" onAction="#foldCard" text="Fold" />
+        </AnchorPane>
+        <AnchorPane fx:id="sideBar" layoutX="31.0" layoutY="53.0" prefHeight="295.0" prefWidth="220.0" style="-fx-background-radius: 25;" styleClass="colorBackground" stylesheets="@color.css">
+            <children>
+                <JFXButton layoutX="182.0" layoutY="14.0" onAction="#closeProgram" text="X" />
+            </children>
+        </AnchorPane>
     </children>
 </AnchorPane>

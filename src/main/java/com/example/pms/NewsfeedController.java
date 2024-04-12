@@ -11,7 +11,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
+
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -71,7 +71,6 @@ public class NewsfeedController implements Initializable {
         File selectedFile = fileChooser.showOpenDialog(null);
         if (selectedFile != null) {
             taFile.setText(selectedFile.getAbsolutePath());
-//            taFile.appendText(file.getAbsolutePath());
         }
     }
 
@@ -156,7 +155,7 @@ public class NewsfeedController implements Initializable {
 
     public void setLoggedInUserId(String userId) {
         loggedInUserId = userId;
-        System.out.println("Received user ID in NewsfeedController: " + loggedInUserId); // Add this line for debugging
+//        System.out.println("Received user ID in NewsfeedController (setLoggedInUserId): " + loggedInUserId); // Add this line for debugging
     }
 
     public void displayUserDetails() {
@@ -198,29 +197,36 @@ public class NewsfeedController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
         connection = dbconnect.getConnection();
-        System.out.println("Received user ID in NewsfeedController: " + loggedInUserId);
-        displayUserDetails();
+        // Ensure that the loggedInUserId is set before initializing
+        loggedInUserId = UserService.getLoggedInUserId();
+        System.out.println("Received user ID in NewsfeedController (initialize): " + loggedInUserId);
 
-        UserService.setLoggedInUserId(loggedInUserId); // Set the loggedInUserId using UserService
+        // Display user details if the user ID is not null
+        if (loggedInUserId != null) {
+            displayUserDetails();
+        }
 
         posts = new ArrayList<>(data());
 
         try {
             for (Post post : posts) {
-                FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(getClass().getResource("post.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("post.fxml"));
 
                 VBox vBox = fxmlLoader.load();
                 PostController postController = fxmlLoader.getController();
                 postController.setData(post);
+                postController.setPostId(post.getPostId()); // Set the postId in the PostController
+
                 posted.getChildren().add(vBox);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+
+
 
     public List<Post> data() {
         List<Post> ls = new ArrayList<>();
@@ -232,6 +238,7 @@ public class NewsfeedController implements Initializable {
 
             while (resultSet.next()) {
                 Post post = new Post();
+                post.setPostId(resultSet.getInt("post_id")); // Fetch and set the postId
                 post.setPostText(resultSet.getString("content"));
                 post.setPostImageBlob(resultSet.getBlob("post_image"));
 
@@ -240,7 +247,7 @@ public class NewsfeedController implements Initializable {
                 LocalDateTime dateTime = LocalDateTime.parse(resultSet.getString("created"), formatter);
                 post.setDates(dateTime);
 
-                post.setLikeCount(resultSet.getInt("like_count"));
+                post.setLikeCount(resultSet.getInt("total_likes"));
                 ls.add(post);
             }
 
@@ -267,6 +274,25 @@ public class NewsfeedController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
+    @FXML
+    void add_component(ActionEvent event) throws IOException {
+        System.out.println("Logged-in User ID before navigating to PostComponentController: " + loggedInUserId); // Debug line
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("post_component.fxml"));
+        Parent root = loader.load();
+
+        // Pass the logged-in user's ID to the next controller
+        PostComponentController controller = loader.getController();
+        controller.setLoggedInUserId(loggedInUserId);
+
+        // Set the scene
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+
 
     @FXML
     void logout(ActionEvent event) throws IOException {

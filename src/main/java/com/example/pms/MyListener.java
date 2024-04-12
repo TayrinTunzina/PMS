@@ -1,5 +1,5 @@
 package com.example.pms;
 
 public interface MyListener {
-    public void onClickListener(Lab fruit);
+    public void onClickListener(Lab component);
 }

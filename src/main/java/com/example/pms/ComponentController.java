@@ -1,6 +1,5 @@
 package com.example.pms;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -14,26 +13,32 @@ public class ComponentController {
     private Label nameLabel;
 
     @FXML
-    private Label priceLable;
+    private Label priceLabel;
 
     @FXML
     private ImageView img;
 
     @FXML
     private void click(MouseEvent mouseEvent) {
-        myListener.onClickListener(fruit);
+        myListener.onClickListener(component);
     }
 
-    private Lab fruit;
+    private Lab component;
     private MyListener myListener;
-
-    public void setData(Lab fruit, MyListener myListener) {
-        this.fruit = fruit;
+    public void setData(Lab component, MyListener myListener) {
+        this.component = component;
         this.myListener = myListener;
-        nameLabel.setText(fruit.getName());
-        priceLable.setText(LabApplication.CURRENCY + fruit.getPrice());
-        Image image = new Image(Objects.requireNonNull(ComponentController.class.getResourceAsStream(fruit.getImgSrc())));
-        img.setImage(image);
+        nameLabel.setText(component.getName());
+        priceLabel.setText(LabApplication.CURRENCY + component.getPrice());
+        Image image = component.getImage();
+        if (image != null) {
+            img.setImage(image);
+        } else {
+            // Handle the case where the image is null
+            // For example, set a default image
+            // img.setImage(defaultImage);
+        }
     }
+
 }
 

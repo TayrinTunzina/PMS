@@ -25,6 +25,11 @@
     -fx-background-radius: 30;
 }
 
+.add-card{
+    -fx-background-color: #F16C31;
+    -fx-background-radius: 30;
+}
+
 .comboBox{
     -fx-background-color: rgba(255,255,255,0.3);
     -fx-background-radius: 30;
@@ -33,6 +38,12 @@
 .add-btn{
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 100;
+}
+
+.choose-btn{
+    -fx-background-color:  #78848c;
+    -fx-background-radius: 100;
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.7) , 10, 0.0 , 0 , 2 );
 }
 
 .free-delivery-card{
