@@ -101,6 +101,12 @@
     -fx-scale-y: 1.05;
 }
 
+.card4 {
+    -fx-background-color: linear-gradient(to left, #f3e7e9 0%, #e3eeff 99%, #e3eeff 100%);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 15, 0, 0, 3);
+    -fx-background-radius: 20;
+}
+
 
 
 

@@ -110,7 +110,7 @@
         </AnchorPane>
     </top>
    <left>
-        <VBox prefHeight="455.0" prefWidth="306.0" spacing="15.0" style="-fx-border-color: #382348; -fx-border-radius: 30; -fx-border-width: 3; -fx-background-color: linear-gradient(from 90.5303% 89.3939% to 99.6212% 13.6364%, #ffffff 0.0%, #ff9900 80.0%, #000000 100.0%);; -fx-background-radius: 30;" stylesheets="@../../../style/newsfeed.css" BorderPane.alignment="CENTER">
+        <VBox prefHeight="455.0" prefWidth="306.0" spacing="15.0" style="-fx-border-color: #382348; -fx-border-radius: 30; -fx-border-width: 3; -fx-background-color: linear-gradient(to top, #dbdcd7 0%, #dddcd7 24%, #e2c9cc 30%, #e7627d 46%, #b8235a 59%, #801357 71%, #3d1635 84%, #1c1a27 100%); -fx-background-radius: 30;" stylesheets="@../../../style/newsfeed.css" BorderPane.alignment="CENTER">
             <children>
                 <Label text="Add Winners" textFill="WHITE">
                     <font>
