@@ -8,6 +8,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
@@ -22,12 +23,18 @@ import javafx.stage.Stage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
+
+import java.awt.Desktop;
+
 
 public class LabController implements Initializable {
     @FXML
@@ -57,7 +64,7 @@ public class LabController implements Initializable {
     private Image image;
     private MyListener myListener;
 
-
+    private Lab chosenComponent;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Establish database connection
@@ -110,7 +117,7 @@ public class LabController implements Initializable {
         List<Lab> components = new ArrayList<>();
 
         // Example: Fetch components from a database
-        try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM components");
+        try (PreparedStatement statement = connection.prepareStatement("SELECT components.*, users.email FROM components JOIN users ON components.s_id = users.user_id");
              ResultSet resultSet = statement.executeQuery()) {
 
             int colorIndex = 0;
@@ -121,6 +128,7 @@ public class LabController implements Initializable {
                 component.setSellerId(resultSet.getString("s_id"));
                 component.setName(resultSet.getString("name"));
                 component.setPrice(resultSet.getString("price"));
+                component.setSellerEmail(resultSet.getString("email"));
                 // Retrieve the image data as a Blob
                 Blob blob = resultSet.getBlob("image");
                 if (blob != null) {
@@ -143,12 +151,12 @@ public class LabController implements Initializable {
         return components;
     }
 
-
-
     private void setChosenComponent(Lab component) {
+        chosenComponent = component;
         compNameLabel.setText(component.getName());
         compPriceLabel.setText(LabApplication.CURRENCY + component.getPrice());
         sellerId.setText(component.getSellerId());
+
         Image image = component.getImage();
         if (image != null) {
             compImg.setImage(image);
@@ -170,6 +178,69 @@ public class LabController implements Initializable {
         }
     }
 
+    @FXML
+    private void mailSeller(ActionEvent event) {
+        // Get the Lab component associated with the button that triggered the event
+        Lab component = chosenComponent;
+        // Check if a component is selected
+        if (component != null) {
+            // Get the seller's email from the component
+            String sellerEmail = component.getSellerEmail();
+            // Encode component name and price
+            String encodedComponentName = encodeValue(component.getName());
+            String encodedPrice = encodeValue(component.getPrice());
+            // Construct Gmail URL with encoded subject and body
+            String subject = "Regarding Component Sale: " + component.getName();
+            String body = "Hello,\n\nI am interested in purchasing the following component:\n\n"
+                    + "Component Name: " + component.getName() + "\n"
+                    + "Price: " + component.getPrice() + "\n\n"
+                    + "Please let me know the availability and any further details.\n\n"
+                    + "Thank you.\n";
+            String encodedSubject = encodeValue(subject);
+            String encodedBody = encodeValue(body);
+            String gmailUrl = "https://mail.google.com/mail/?view=cm&fs=1&to=" + sellerEmail
+                    + "&su=" + encodedSubject + "&body=" + encodedBody;
+            // Debugging line to print the seller's email
+            System.out.println("Seller's email: " + sellerEmail);
+            // Open default web browser with the constructed Gmail URL
+            openChrome(gmailUrl);
+        } else {
+            // Handle the case when no component is selected
+            System.out.println("No component selected.");
+        }
+    }
+
+    // Method to encode special characters in a string
+    private String encodeValue(String value) {
+        try {
+            return java.net.URLEncoder.encode(value, "UTF-8");
+        } catch (UnsupportedEncodingException ex) {
+            throw new RuntimeException(ex.getCause());
+        }
+    }
+
+    // Method to open default web browser with a specified URL
+    // Method to open Google Chrome with a specified URL
+    private void openChrome(String url) {
+        try {
+            // Specify the path to the Google Chrome executable
+            String chromePath = "C:/Program Files/Google/Chrome/Application/chrome.exe";
+            // Launch Google Chrome with the URL as an argument
+            ProcessBuilder pb = new ProcessBuilder(chromePath, url);
+            pb.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Method to open default email client with a specified mailto URI
+    private void openDefaultEmailClient(String mailtoUri) {
+        try {
+            Desktop.getDesktop().mail(new URI(mailtoUri));
+        } catch (IOException | URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 

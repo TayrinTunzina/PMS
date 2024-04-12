@@ -11,16 +11,17 @@ public class Lab {
 
     private String sellerId;
 
-    private String email;
+    private String sellerEmail;
 
-    // Getters and setters for the email field
-    public String getEmail() {
-        return email;
+    // Getter and setter for seller's email
+    public String getSellerEmail() {
+        return sellerEmail;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setSellerEmail(String sellerEmail) {
+        this.sellerEmail = sellerEmail;
     }
+
 
     public void setImage(Image image) {
         this.image = image;

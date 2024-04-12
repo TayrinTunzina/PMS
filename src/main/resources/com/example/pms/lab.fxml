@@ -116,13 +116,16 @@
                                     <Separator prefHeight="0.0" prefWidth="118.0" />
                                 </children>
                             </HBox>
-                            <Button fx:id="email" mnemonicParsing="false" prefHeight="50.0" prefWidth="270.0" styleClass="add-btn" stylesheets="@../../../style/lab.css" text="Mail Seller" textFill="#828282">
+                            <Button fx:id="sellerEmail" mnemonicParsing="false" onAction="#mailSeller" prefHeight="50.0" prefWidth="270.0" styleClass="add-btn" stylesheets="@../../../style/lab.css" text="Mail Seller" textFill="#828282">
                                 <VBox.margin>
                                     <Insets bottom="40.0" top="10.0" />
                                 </VBox.margin>
                                 <font>
                                     <Font name="System Bold" size="18.0" />
                                 </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                             </Button>
                         </children>
                         <styleClass>
