@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="672.0" prefWidth="1000.0" stylesheets="@../../../style/lab.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pms.ProjectController">
+    <center>
+        <VBox alignment="TOP_RIGHT" prefHeight="610.0" prefWidth="1000.0" style="-fx-background-color: linear-gradient(to right, #ffecd2 0%, #fcb69f 100%);" BorderPane.alignment="CENTER">
+            <children>
+                <HBox alignment="TOP_CENTER" prefHeight="41.0" prefWidth="1000.0" />
+
+                <VBox alignment="TOP_RIGHT" prefHeight="606.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <HBox alignment="CENTER" prefHeight="51.0" prefWidth="1000.0">
+                            <children>
+                                <Label alignment="TOP_CENTER" prefHeight="62.0" prefWidth="430.0" text="Send Project Details To Faculty">
+                                    <font>
+                                        <Font name="System Bold" size="23.0" />
+                                    </font>
+                                </Label>
+                            </children></HBox>
+                        <HBox alignment="CENTER" prefHeight="134.0" prefWidth="1000.0">
+                            <children>
+                                <VBox prefHeight="133.0" prefWidth="414.0" styleClass="card5" stylesheets="@../../../style/newsfeed.css">
+                                    <children>
+                                        <!-- Course dropdown -->
+                                        <HBox alignment="CENTER">
+                                            <Label prefHeight="20.0" prefWidth="133.0" text="Select Project ID: ">
+                                                <font>
+                                                    <Font name="System Bold" size="14.0" />
+                                                </font>
+                                                <HBox.margin>
+                                                    <Insets />
+                                                </HBox.margin>
+                                            </Label>
+                                            <ComboBox prefHeight="27.0" prefWidth="182.0" styleClass="comboBox2">
+                                                <HBox.margin>
+                                                    <Insets />
+                                                </HBox.margin>
+                                            </ComboBox>
+                                            <VBox.margin>
+                                                <Insets top="30.0" />
+                                            </VBox.margin>
+                                        </HBox>
+                                        <HBox alignment="CENTER" prefHeight="35.0" prefWidth="414.0">
+                                            <children>
+                                                <Button mnemonicParsing="false" prefHeight="34.0" prefWidth="130.0" text="Search" textFill="WHITE">
+                                                    <font>
+                                                        <Font name="System Bold" size="14.0" />
+                                                    </font>
+                                                </Button>
+                                            </children>
+                                            <VBox.margin>
+                                                <Insets top="20.0" />
+                                            </VBox.margin>
+                                        </HBox>
+                                    </children>
+                                </VBox>
+                            </children>
+                            <VBox.margin>
+                                <Insets top="5.0" />
+                            </VBox.margin>
+                        </HBox>
+                        <HBox prefHeight="44.0" prefWidth="1000.0" />
+                        <HBox alignment="CENTER" prefHeight="308.0" prefWidth="1000.0">
+                            <children>
+                                <VBox prefHeight="308.0" prefWidth="742.0" stylesheets="@../../../style/newsfeed.css">
+                                    <children>
+                                        <SplitPane dividerPositions="0.49433045356371486" prefHeight="302.0" prefWidth="742.0" styleClass="card5">
+                                            <items>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="275.0" prefWidth="387.0">
+                                                    <children>
+                                                        <HBox alignment="CENTER" layoutX="15.0" layoutY="22.0">
+                                                            <children>
+                                                                <Label alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="94.0" text="Project ID:">
+                                                                    <font>
+                                                                        <Font name="System Bold" size="14.0" />
+                                                                    </font>
+                                                                    <HBox.margin>
+                                                                        <Insets right="10.0" />
+                                                                    </HBox.margin>
+                                                                </Label>
+                                                                <TextField fx:id="projectIdTextField" editable="false" prefHeight="26.0" prefWidth="206.0" style="-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.7) , 10, 0.0 , 0 , 2 );" />
+                                                            </children>
+                                                            <padding>
+                                                                <Insets top="20.0" />
+                                                            </padding>
+                                                        </HBox>
+                                                        <HBox alignment="CENTER" layoutX="9.0" layoutY="135.0" prefHeight="51.0" prefWidth="355.0">
+                                                            <children>
+                                                                <HBox alignment="CENTER" prefHeight="31.0" prefWidth="371.0">
+                                                                    <children>
+                                                                        <Label alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="99.0" text="Project Video: ">
+                                                                            <font>
+                                                                                <Font name="System Bold" size="14.0" />
+                                                                            </font>
+                                                                            <HBox.margin>
+                                                                                <Insets right="10.0" />
+                                                                            </HBox.margin>
+                                                                        </Label>
+                                                                        <Button mnemonicParsing="false" prefHeight="11.0" prefWidth="216.0">
+                                                                            <graphic>
+                                                                                <HBox alignment="CENTER" prefHeight="23.0" prefWidth="212.0" spacing="5.0">
+                                                                                    <children>
+                                                                                        <ImageView fitHeight="16.0" fitWidth="18.0" preserveRatio="true">
+                                                                                            <image>
+                                                                                                <Image url="@../../../img/more.png" />
+                                                                                            </image>
+                                                                                            <HBox.margin>
+                                                                                                <Insets />
+                                                                                            </HBox.margin>
+                                                                                        </ImageView>
+                                                                                        <Label text="Choose File">
+                                                                                            <font>
+                                                                                                <Font name="System Bold" size="14.0" />
+                                                                                            </font>
+                                                                                        </Label>
+                                                                                        <TextField editable="false" prefHeight="23.0" prefWidth="86.0">
+                                                                                            <font>
+                                                                                                <Font name="Arial Bold" size="12.0" />
+                                                                                            </font>
+                                                                                        </TextField>
+                                                                                    </children>
+                                                                                </HBox>
+                                                                            </graphic>
+                                                                            <font>
+                                                                                <Font name="Arial Bold" size="12.0" />
+                                                                            </font>
+                                                                            <cursor>
+                                                                                <Cursor fx:constant="HAND" />
+                                                                            </cursor>
+                                                                            <styleClass>
+                                                                                <String fx:value="add-btn" />
+                                                                                <String fx:value="choose-btn" />
+                                                                            </styleClass>
+                                                                        </Button>
+                                                                    </children>
+                                                                </HBox>
+                                                            </children>
+                                                            <padding>
+                                                                <Insets top="20.0" />
+                                                            </padding>
+                                                        </HBox>
+                                                        <Separator layoutX="-4.0" layoutY="210.0" prefHeight="19.0" prefWidth="371.0">
+                                                            <padding>
+                                                                <Insets top="10.0" />
+                                                            </padding>
+                                                        </Separator>
+                                                        <HBox alignment="CENTER" layoutX="46.0" layoutY="244.0" prefHeight="35.0" prefWidth="270.0">
+                                                            <children>
+                                                                <Button mnemonicParsing="false" prefHeight="49.0" prefWidth="159.0" text="Get Feedback" textFill="WHITE">
+                                                                    <font>
+                                                                        <Font name="System Bold" size="14.0" />
+                                                                    </font>
+                                                                </Button>
+                                                            </children>
+                                                        </HBox>
+                                                        <HBox alignment="CENTER" layoutX="6.0" layoutY="84.0" prefHeight="35.0" prefWidth="350.0">
+                                                            <children>
+                                                                <HBox alignment="CENTER" prefHeight="18.0" prefWidth="350.0">
+                                                                    <children>
+                                                                        <Label alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="110.0" text="Project Report: ">
+                                                                            <font>
+                                                                                <Font name="System Bold" size="14.0" />
+                                                                            </font>
+                                                                            <HBox.margin>
+                                                                                <Insets right="10.0" />
+                                                                            </HBox.margin>
+                                                                        </Label>
+                                                                        <Button mnemonicParsing="false" prefHeight="11.0" prefWidth="216.0">
+                                                                            <graphic>
+                                                                                <HBox alignment="CENTER" prefHeight="23.0" prefWidth="212.0" spacing="5.0">
+                                                                                    <children>
+                                                                                        <ImageView fitHeight="16.0" fitWidth="18.0" preserveRatio="true">
+                                                                                            <image>
+                                                                                                <Image url="@../../../img/more.png" />
+                                                                                            </image>
+                                                                                            <HBox.margin>
+                                                                                                <Insets />
+                                                                                            </HBox.margin>
+                                                                                        </ImageView>
+                                                                                        <Label text="Choose File">
+                                                                                            <font>
+                                                                                                <Font name="System Bold" size="14.0" />
+                                                                                            </font>
+                                                                                        </Label>
+                                                                                        <TextField editable="false" prefHeight="23.0" prefWidth="86.0">
+                                                                                            <font>
+                                                                                                <Font name="Arial Bold" size="12.0" />
+                                                                                            </font>
+                                                                                        </TextField>
+                                                                                    </children>
+                                                                                </HBox>
+                                                                            </graphic>
+                                                                            <font>
+                                                                                <Font name="Arial Bold" size="12.0" />
+                                                                            </font>
+                                                                            <cursor>
+                                                                                <Cursor fx:constant="HAND" />
+                                                                            </cursor>
+                                                                            <styleClass>
+                                                                                <String fx:value="add-btn" />
+                                                                                <String fx:value="choose-btn" />
+                                                                            </styleClass>
+                                                                        </Button>
+                                                                    </children>
+                                                                </HBox>
+                                                            </children>
+                                                            <padding>
+                                                                <Insets top="20.0" />
+                                                            </padding>
+                                                        </HBox>
+                                                    </children>
+                                                </AnchorPane>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="275.0" prefWidth="336.0">
+                                                    <children>
+                                                        <Label alignment="CENTER" layoutX="105.0" layoutY="14.0" prefHeight="35.0" prefWidth="166.0" text="Project Features">
+                                                            <font>
+                                                                <Font name="System Bold" size="18.0" />
+                                                            </font>
+                                                        </Label>
+                                                        <TextArea layoutX="51.0" layoutY="49.0" prefHeight="224.0" prefWidth="274.0" promptText="Enter Project Name &amp; Feature List..." style="-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.7) , 10, 0.0 , 0 , 2 )dropshadow( gaussian , rgba(0,0,0,0.7) , 10, 0.0 , 0 , 2 );">
+                                                            <font>
+                                                                <Font size="14.0" />
+                                                            </font></TextArea>
+                                                    </children>
+                                                </AnchorPane>
+                                            </items>
+                                            <VBox.margin>
+                                                <Insets />
+                                            </VBox.margin>
+                                        </SplitPane>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+            </children>
+            <BorderPane.margin>
+                <Insets />
+            </BorderPane.margin>
+        </VBox>
+    </center>
+    <top>
+        <AnchorPane cacheShape="false" prefHeight="58.0" prefWidth="1315.0" styleClass="logo-container" stylesheets="@../../../style/newsfeed.css" BorderPane.alignment="CENTER">
+            <children>
+                <ImageView fitHeight="56.0" fitWidth="177.0" layoutX="1.0" layoutY="3.0" nodeOrientation="INHERIT" pickOnBounds="true" styleClass="logo">
+                    <image>
+                        <Image url="@../../../img/logo.png" />
+                    </image>
+                    <effect>
+                        <Blend />
+                    </effect>
+                </ImageView>
+                <Pane layoutX="776.0" prefHeight="62.0" prefWidth="136.0" AnchorPane.rightAnchor="0.0">
+                    <children>
+                        <Button alignment="CENTER" contentDisplay="CENTER" layoutX="9.0" layoutY="13.0" mnemonicParsing="false" onAction="#back" prefHeight="38.0" prefWidth="118.0" stylesheets="@../../../style/newsfeed.css" text="Back">
+                            <font>
+                                <Font name="Arial Bold" size="16.0" />
+                            </font>
+                            <cursor>
+                                <Cursor fx:constant="HAND" />
+                            </cursor>
+                            <styleClass>
+                                <String fx:value="navbar-button" />
+                                <String fx:value="navbar-button:hover" />
+                            </styleClass>
+                            <textFill>
+                                <LinearGradient endX="0.15909090863935876" endY="0.6666666775038748" startX="0.17045454093904205" startY="0.06060600280761719">
+                                    <stops>
+                                        <Stop>
+                                            <color>
+                                                <Color red="1.0" green="1.0" blue="1.0" />
+                                            </color>
+                                        </Stop>
+                                        <Stop offset="1.0">
+                                            <color>
+                                                <Color />
+                                            </color>
+                                        </Stop>
+                                    </stops>
+                                </LinearGradient>
+                            </textFill>
+                        </Button>
+                    </children>
+                </Pane>
+            </children>
+        </AnchorPane>
+    </top>
+</BorderPane>

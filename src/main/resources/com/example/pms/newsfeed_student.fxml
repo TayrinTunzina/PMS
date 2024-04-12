@@ -270,7 +270,7 @@
                                         <Insets right="10.0" />
                                     </HBox.margin>
                                 </ImageView>
-                                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="35.0" prefWidth="124.0" stylesheets="@../../../style/newsfeed.css" text="Send Project" textFill="WHITE">
+                                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#sendProject" prefHeight="35.0" prefWidth="124.0" stylesheets="@../../../style/newsfeed.css" text="Send Project" textFill="WHITE">
                                     <font>
                                         <Font name="Arial Bold" size="12.0" />
                                     </font>

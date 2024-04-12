@@ -86,40 +86,43 @@
                               </TextField>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="53.0" prefWidth="335.0" />
-                                <Button fx:id="chooseFileButton" mnemonicParsing="false" onAction="#chooseFile" prefHeight="26.0" prefWidth="248.0">
-                                    <graphic>
-                                        <HBox alignment="CENTER" prefHeight="20.0" prefWidth="133.0" spacing="5.0">
-                                            <ImageView fitHeight="16.0" fitWidth="18.0" preserveRatio="true">
-                                                <image>
-                                                    <Image url="@../../../img/more.png" />
-                                                </image>
-                                    <HBox.margin>
-                                       <Insets />
-                                    </HBox.margin>
-                                            </ImageView>
-                                            <Label text="Choose File">
-                                    <font>
-                                       <Font name="System Bold" size="14.0" />
-                                    </font></Label>
-                                 <TextField fx:id="fpath" editable="false" prefHeight="23.0" prefWidth="127.0">
-                                    <font>
-                                       <Font name="Arial Bold" size="12.0" />
-                                    </font>
-                                 </TextField>
-                                        </HBox>
-                                    </graphic>
-                                    <font>
-                                        <Font name="Arial Bold" size="12.0" />
-                                    </font>
-                                    <cursor>
-                                        <Cursor fx:constant="HAND" />
-                                    </cursor>
-                           <styleClass>
-                              <String fx:value="add-btn" />
-                              <String fx:value="choose-btn" />
-                           </styleClass>
-                                </Button>
+                        <HBox alignment="CENTER" prefHeight="53.0" prefWidth="335.0">
+                           <children>
+                                      <Button fx:id="chooseFileButton" mnemonicParsing="false" onAction="#chooseFile" prefHeight="26.0" prefWidth="248.0">
+                                          <graphic>
+                                              <HBox alignment="CENTER" prefHeight="20.0" prefWidth="133.0" spacing="5.0">
+                                                  <ImageView fitHeight="16.0" fitWidth="18.0" preserveRatio="true">
+                                                      <image>
+                                                          <Image url="@../../../img/more.png" />
+                                                      </image>
+                                          <HBox.margin>
+                                             <Insets />
+                                          </HBox.margin>
+                                                  </ImageView>
+                                                  <Label text="Choose File">
+                                          <font>
+                                             <Font name="System Bold" size="14.0" />
+                                          </font>
+                                       </Label>
+                                       <TextField fx:id="fpath" editable="false" prefHeight="23.0" prefWidth="127.0">
+                                          <font>
+                                             <Font name="Arial Bold" size="12.0" />
+                                          </font>
+                                       </TextField>
+                                              </HBox>
+                                          </graphic>
+                                          <font>
+                                              <Font name="Arial Bold" size="12.0" />
+                                          </font>
+                                          <cursor>
+                                              <Cursor fx:constant="HAND" />
+                                          </cursor>
+                                 <styleClass>
+                                    <String fx:value="add-btn" />
+                                    <String fx:value="choose-btn" />
+                                 </styleClass>
+                                      </Button>
+                           </children></HBox>
 
                                 <HBox alignment="CENTER" prefHeight="45.0" prefWidth="200.0">
                                     <VBox.margin>
