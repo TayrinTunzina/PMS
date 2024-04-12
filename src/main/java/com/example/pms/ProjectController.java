@@ -8,10 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -22,9 +19,23 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ProjectController {
+
+    @FXML
+    private VBox card1;
+
+    @FXML
+    private ComboBox<String> projectIdComboBox;
+
+    @FXML
+    private Button checkRequestButton;
+
+    @FXML
+    private VBox card2;
 
     @FXML
     private ComboBox<String> courseComboBox;
@@ -47,6 +58,9 @@ public class ProjectController {
     private TextField courseTextField;
 
     @FXML
+    private TextArea studentTextarea;
+
+    @FXML
     private TextField projectIdTextField;
 
     @FXML
@@ -59,8 +73,204 @@ public class ProjectController {
     @FXML
     public void initialize() {
         connection = dbconnect.getConnection();
-        secondCard.setVisible(false); // Hide the second card initially
+
+        // Check if secondCard exists in the loaded FXML file
+        if (secondCard != null) {
+            secondCard.setVisible(false); // Hide the second card initially
+        }
+
+        // Check if projectIdComboBox exists in the loaded FXML file
+        if (projectIdComboBox != null) {
+            // Populate ComboBox with unique project IDs
+            populateComboBox();
+
+            // Set action for the button
+            checkRequestButton.setOnAction(event -> handleCheckRequest());
+        }
     }
+
+
+    private void populateComboBox() {
+        Set<String> projectIds = new HashSet<>();
+        String loggedInUserId = UserService.getLoggedInUserId(); // Assuming this method gets the logged-in user's ID
+
+        try (PreparedStatement statement = connection.prepareStatement("SELECT DISTINCT p_id FROM request WHERE f_id = ?")) {
+            statement.setString(1, loggedInUserId); // Set the value for the parameter
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    projectIds.add(resultSet.getString("p_id"));
+                }
+            }
+            projectIdComboBox.getItems().addAll(projectIds);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void handleCheckRequest() {
+        String selectedProjectId = projectIdComboBox.getValue();
+
+        try {
+            // Prepare the SQL statement to fetch details based on the selected project ID
+            String sql = "SELECT r.f_id, r.s_id, u.name AS student_name, r.course_name FROM request r " +
+                    "JOIN users u ON r.s_id = u.user_id " +
+                    "WHERE r.p_id = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, selectedProjectId);
+
+            // Execute the query
+            ResultSet resultSet = statement.executeQuery();
+
+            // Check if the result set has data
+            if (resultSet.next()) {
+                // Retrieve the details from the result set for the first row
+                String facultyId = resultSet.getString("f_id");
+                String courseName = resultSet.getString("course_name");
+
+                // Fetch faculty name
+                String facultyName = fetchUserName(facultyId);
+
+                // Initialize a StringBuilder to store all student names and IDs
+                StringBuilder studentsInfoBuilder = new StringBuilder();
+
+                // Process the first row
+                String studentId = resultSet.getString("s_id");
+                String studentName = resultSet.getString("student_name");
+                studentsInfoBuilder.append(studentId).append(" - ").append(studentName);
+
+                // Iterate through the remaining rows to fetch student names and IDs
+                while (resultSet.next()) {
+                    studentId = resultSet.getString("s_id");
+                    studentName = resultSet.getString("student_name");
+                    studentsInfoBuilder.append("\n").append(studentId).append(" - ").append(studentName);
+                }
+
+                // Populate the text fields in card2 with the fetched details
+                facultyIdTextField.setText(facultyName);
+                courseTextField.setText(courseName);
+                projectIdTextField.setText(selectedProjectId);
+                studentTextarea.setText(studentsInfoBuilder.toString());
+
+                // Show card2
+                card2.setVisible(true);
+            } else {
+                showAlert(Alert.AlertType.WARNING, "No Data Found", "No details found for the selected project ID.");
+            }
+
+            // Close the result set and statement
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle the exception appropriately
+        }
+    }
+
+
+
+    // Method to fetch user names based on user IDs
+    private String fetchUserName(String userId) throws SQLException {
+        String userName = "";
+        String sql = "SELECT name FROM users WHERE user_id = ?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, userId);
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            userName = resultSet.getString("name");
+        }
+        resultSet.close();
+        statement.close();
+        return userName;
+    }
+
+    @FXML
+    private void allocateStudents(ActionEvent event) {
+        String projectId = projectIdTextField.getText();
+        String courseName = courseTextField.getText();
+        String facultyId = UserService.getLoggedInUserId();
+        String facultyName = facultyIdTextField.getText();
+        String studentsInfo = studentTextarea.getText();
+
+        try {
+            // Check if the project ID is already allocated
+            if (isProjectAllocated(projectId)) {
+                showAlert(Alert.AlertType.WARNING, "Project Already Allocated", "Project ID " + projectId + " is already allocated.");
+                // Clear the fields and update the view
+                resetFields();
+                return; // Exit the method
+            }
+
+            // Split the students' info by newline character
+            String[] studentsInfoArray = studentsInfo.split("\\n");
+
+            // Prepare the SQL statement to insert data into the project table
+            String sql = "INSERT INTO project (p_id, course_name, f_id, f_name, s_id, s_name) VALUES (?, ?, ?, ?, ?, ?)";
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            // Insert each student's info into the project table
+            for (String studentInfo : studentsInfoArray) {
+                // Split student info into ID and name using "-"
+                String[] studentData = studentInfo.split(" - ");
+                if (studentData.length == 2) {
+                    String studentId = studentData[0].trim(); // Trim to remove leading/trailing whitespace
+                    String studentName = studentData[1].trim(); // Trim to remove leading/trailing whitespace
+
+                    statement.setString(1, projectId);
+                    statement.setString(2, courseName);
+                    statement.setString(3, facultyId);
+                    statement.setString(4, facultyName);
+                    statement.setString(5, studentId);
+                    statement.setString(6, studentName);
+
+                    // Execute the insert statement
+                    statement.executeUpdate();
+                } else {
+                    // Handle the case where student data is not in the expected format
+                    // For example, show an error message or skip this student
+                    System.err.println("Invalid student data format: " + studentInfo);
+                }
+            }
+
+            // Update the status column of request table to "allocated" for all related entries
+            updateRequestStatus(projectId);
+
+            // Show a confirmation message
+            showAlert(Alert.AlertType.CONFIRMATION, "Allocation Success", "Students allocated successfully.");
+
+            // Clear the fields and update the view
+            resetFields();
+
+            // Close the statement
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle the exception appropriately
+            showAlert(Alert.AlertType.ERROR, "Allocation Error", "Failed to allocate students.");
+        }
+    }
+
+    // Method to update the status column of the request table to "allocated"
+    private void updateRequestStatus(String projectId) throws SQLException {
+        String sqlUpdate = "UPDATE request SET status = 'allocated' WHERE p_id = ?";
+        PreparedStatement updateStatement = connection.prepareStatement(sqlUpdate);
+        updateStatement.setString(1, projectId);
+        updateStatement.executeUpdate();
+        updateStatement.close();
+    }
+
+    // Method to check if the project ID is already allocated
+    private boolean isProjectAllocated(String projectId) throws SQLException {
+        String sqlCheck = "SELECT * FROM request WHERE p_id = ? AND status = 'allocated'";
+        PreparedStatement checkStatement = connection.prepareStatement(sqlCheck);
+        checkStatement.setString(1, projectId);
+        ResultSet resultSet = checkStatement.executeQuery();
+        boolean allocated = resultSet.next(); // If next() returns true, project is allocated
+        resultSet.close();
+        checkStatement.close();
+        return allocated;
+    }
+
+
+
 
     @FXML
     private void showDetails(ActionEvent event) {
@@ -149,26 +359,37 @@ public class ProjectController {
         String projectId = projectIdTextField.getText();
         String studentId = UserService.getLoggedInUserId(); // Assuming this method gets the logged-in user's ID
         String facultyId = facultyIdTextField.getText(); // Fetching faculty ID from the textField
+        String courseName = courseTextField.getText();
 
         try {
             // Check if the request already exists
-            String checkSql = "SELECT * FROM request WHERE p_id = ? AND s_id = ?";
+            String checkSql = "SELECT status FROM request WHERE p_id = ? AND s_id = ?";
             PreparedStatement checkStatement = connection.prepareStatement(checkSql);
             checkStatement.setString(1, projectId);
             checkStatement.setString(2, studentId);
             ResultSet resultSet = checkStatement.executeQuery();
 
             if (resultSet.next()) {
-                // Request already exists, show alert
-                showAlert(Alert.AlertType.INFORMATION, "Request Already Exists", "A request for this project already exists.");
+                String status = resultSet.getString("status");
+                if (status.equals("pending")) {
+                    // Request already exists and is pending, show alert
+                    showAlert(Alert.AlertType.INFORMATION, "Request Already Exists", "A request for this project already exists.");
+                    clearFields();
+                } else if (status.equals("allocated")) {
+                    // Project already allocated, show alert
+                    showAlert(Alert.AlertType.ERROR, "Project Already Allocated", "The project is already allocated.");
+                    clearFields();
+                }
             } else {
                 // Insert the data into the request table
-                String sql = "INSERT INTO request (p_id, s_id, f_id) VALUES (?, ?, ?)";
-                PreparedStatement statement = connection.prepareStatement(sql);
-                statement.setString(1, projectId);
-                statement.setString(2, studentId);
-                statement.setString(3, facultyId);
-                int rowsAffected = statement.executeUpdate();
+                String insertSql = "INSERT INTO request (p_id, course_name, s_id, f_id, status) VALUES (?, ?, ?, ?, ?)";
+                PreparedStatement insertStatement = connection.prepareStatement(insertSql);
+                insertStatement.setString(1, projectId);
+                insertStatement.setString(2, courseName);
+                insertStatement.setString(3, studentId);
+                insertStatement.setString(4, facultyId);
+                insertStatement.setString(5, "pending");
+                int rowsAffected = insertStatement.executeUpdate();
 
                 if (rowsAffected > 0) {
                     showAlert(Alert.AlertType.CONFIRMATION, "Request Submitted", "Request submitted successfully.");
@@ -177,7 +398,7 @@ public class ProjectController {
                     showAlert(Alert.AlertType.ERROR, "Request Failed", "Failed to submit request.");
                 }
 
-                statement.close();
+                insertStatement.close();
             }
             checkStatement.close();
             resultSet.close();
@@ -185,6 +406,7 @@ public class ProjectController {
             e.printStackTrace(); // Handle the exception appropriately
         }
     }
+
 
     // Method to show an alert
     private void showAlert(Alert.AlertType alertType, String title, String content) {
@@ -204,7 +426,15 @@ public class ProjectController {
         // Clear other text fields as needed
     }
 
-
+    // Method to reset fields and update the view
+    private void resetFields() {
+        projectIdComboBox.getSelectionModel().clearSelection(); // Clear selection in the ComboBox
+        projectIdTextField.clear();
+        courseTextField.clear();
+        facultyIdTextField.clear();
+        studentTextarea.clear();
+        card2.setVisible(false); // Hide card2
+    }
 
 
     private Stage stage;

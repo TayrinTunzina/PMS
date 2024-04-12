@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.String?>
-<?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Blend?>
 <?import javafx.scene.image.Image?>
@@ -24,27 +25,27 @@
 
 <BorderPane prefHeight="600.0" prefWidth="1000.0" stylesheets="@../../../style/lab.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pms.ProjectController">
     <center>
-        <VBox alignment="TOP_RIGHT" prefHeight="571.0" prefWidth="692.0" style="-fx-background-color: linear-gradient(to top, #dbdcd7 0%, #dddcd7 24%, #e2c9cc 30%, #e7627d 46%, #b8235a 59%, #801357 71%, #3d1635 84%, #1c1a27 100%);" BorderPane.alignment="CENTER">
+        <VBox alignment="TOP_RIGHT" prefHeight="571.0" prefWidth="692.0" style="-fx-background-color: linear-gradient(to top, #fae8f2 0%, #f7b879 10%, #ff7882 35%, #c8699e 52%, #7046aa 71%, #030c5c 87%, #020a47 100%);" BorderPane.alignment="CENTER">
             <children>
                 <HBox alignment="TOP_CENTER" prefHeight="66.0" prefWidth="1000.0" />
 
-                <VBox alignment="TOP_RIGHT" prefHeight="607.0" prefWidth="1008.0" BorderPane.alignment="CENTER">
+                <VBox alignment="TOP_RIGHT" prefHeight="607.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
                     <children>
                         <HBox alignment="CENTER" prefHeight="51.0" prefWidth="1000.0">
                             <children>
-                                <Label alignment="CENTER" prefHeight="32.0" prefWidth="430.0" text="Send Request To Faculty For Project Allocation" textFill="WHITE">
+                                <Label alignment="CENTER" prefHeight="32.0" prefWidth="430.0" text="Allocate Students" textFill="WHITE">
                                     <font>
-                                        <Font name="System Bold" size="18.0" />
+                                        <Font name="System Bold" size="24.0" />
                                     </font>
                                 </Label>
                             </children></HBox>
-                        <HBox alignment="CENTER" prefHeight="176.0" prefWidth="1000.0">
+                        <HBox alignment="CENTER" prefHeight="134.0" prefWidth="1000.0">
                             <children>
-                                <VBox prefHeight="133.0" prefWidth="414.0" styleClass="card4" stylesheets="@../../../style/newsfeed.css">
+                                <VBox fx:id="card1" prefHeight="133.0" prefWidth="414.0" styleClass="card4" stylesheets="@../../../style/newsfeed.css">
                                     <children>
                                         <!-- Course dropdown -->
                                         <HBox alignment="CENTER">
-                                            <Label alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="133.0" text="Select Course: ">
+                                            <Label prefHeight="20.0" prefWidth="133.0" text="Select Project ID: ">
                                                 <font>
                                                     <Font name="System Bold" size="14.0" />
                                                 </font>
@@ -52,18 +53,7 @@
                                                     <Insets />
                                                 </HBox.margin>
                                             </Label>
-                                            <ComboBox fx:id="courseComboBox" onAction="#onCourseSelected" prefHeight="27.0" prefWidth="182.0" styleClass="comboBox2">
-                                                <items>
-                                                    <!-- Add dropdown items for subjects -->
-                                                    <FXCollections fx:factory="observableArrayList">
-                                                        <String fx:value="Advanced Object Oriented Programming Lab" />
-                                                        <String fx:value="Database Management Systems Lab" />
-                                                        <String fx:value="Electronics Lab" />
-                                                        <String fx:value="Microprocessors and Microcontrollers Lab" />
-                                                        <String fx:value="Software Engineering Lab" />
-                                                        <String fx:value="System Analysis and Design Lab" />
-                                                    </FXCollections>
-                                                </items>
+                                            <ComboBox fx:id="projectIdComboBox" prefHeight="27.0" prefWidth="182.0" styleClass="comboBox2">
                                                 <HBox.margin>
                                                     <Insets />
                                                 </HBox.margin>
@@ -72,28 +62,9 @@
                                                 <Insets top="30.0" />
                                             </VBox.margin>
                                         </HBox>
-                                        <!-- f_id dropdown -->
-                                        <HBox alignment="CENTER">
-                                            <Label prefHeight="20.0" prefWidth="138.0" text="Select faculty Name:">
-                                                <font>
-                                                    <Font name="System Bold" size="14.0" />
-                                                </font>
-                                                <HBox.margin>
-                                                    <Insets />
-                                                </HBox.margin>
-                                            </Label>
-                                            <ComboBox fx:id="fidComboBox" prefHeight="27.0" prefWidth="182.0" styleClass="comboBox2">
-                                                <HBox.margin>
-                                                    <Insets />
-                                                </HBox.margin>
-                                            </ComboBox>
-                                            <VBox.margin>
-                                                <Insets top="20.0" />
-                                            </VBox.margin>
-                                        </HBox>
                                         <HBox alignment="CENTER" prefHeight="35.0" prefWidth="414.0">
                                             <children>
-                                                <Button fx:id="seeDetailsButton" mnemonicParsing="false" onAction="#showDetails" prefHeight="33.0" prefWidth="130.0" text="See Details" textFill="WHITE">
+                                                <Button fx:id="checkRequestButton" mnemonicParsing="false" prefHeight="34.0" prefWidth="165.0" text="Check For Request" textFill="WHITE">
                                                     <font>
                                                         <Font name="System Bold" size="14.0" />
                                                     </font>
@@ -110,92 +81,94 @@
                         <HBox prefHeight="24.0" prefWidth="1000.0" />
                         <HBox alignment="CENTER" prefHeight="276.0" prefWidth="1000.0">
                             <children>
-                                <VBox fx:id="secondCard" prefHeight="270.0" prefWidth="468.0" styleClass="card4" stylesheets="@../../../style/newsfeed.css" visible="false">
+                                <VBox fx:id="card2" prefHeight="276.0" prefWidth="741.0" stylesheets="@../../../style/newsfeed.css" visible="false">
                                     <children>
-                                        <HBox alignment="CENTER">
-                                            <VBox.margin>
-                                                <Insets top="24.0" />
-                                            </VBox.margin>
-                                            <children>
-                                                <Label alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="94.0" text="Faculty ID:">
-                                                    <font>
-                                                        <Font name="System Bold" size="14.0" />
-                                                    </font>
-                                                    <HBox.margin>
-                                                        <Insets right="10.0" />
-                                                    </HBox.margin>
-                                                </Label>
-                                                <TextField fx:id="facultyIdTextField" editable="false" prefHeight="26.0" prefWidth="238.0" style="-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.7) , 10, 0.0 , 0 , 2 );" />
-                                            </children>
-                                        </HBox>
-                                        <HBox alignment="CENTER" prefWidth="452.0">
-                                            <VBox.margin>
+                              <SplitPane dividerPositions="0.5218918918918918" prefHeight="279.0" prefWidth="758.0" styleClass="card4">
+                                <items>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="275.0" prefWidth="379.0">
+                                       <children>
+                                                    <HBox alignment="CENTER" layoutX="15.0" layoutY="22.0">
+                                                        <children>
+                                                            <Label alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="94.0" text="Project ID:">
+                                                                <font>
+                                                                    <Font name="System Bold" size="14.0" />
+                                                                </font>
+                                                                <HBox.margin>
+                                                                    <Insets right="10.0" />
+                                                                </HBox.margin>
+                                                            </Label>
+                                                            <TextField fx:id="projectIdTextField" editable="false" prefHeight="26.0" prefWidth="238.0" style="-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.7) , 10, 0.0 , 0 , 2 );" />
+                                                        </children>
+                                             <padding>
                                                 <Insets top="20.0" />
-                                            </VBox.margin>
-                                            <children>
-                                                <Label prefHeight="20.0" prefWidth="94.0" text="Faculty Name:">
-                                                    <font>
-                                                        <Font name="System Bold" size="14.0" />
-                                                    </font>
-                                                    <HBox.margin>
-                                                        <Insets right="10.0" />
-                                                    </HBox.margin>
-                                                </Label>
-                                                <TextField fx:id="facultyNameTextField" editable="false" prefHeight="26.0" prefWidth="237.0" style="-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.7) , 10, 0.0 , 0 , 2 );" />
-                                            </children>
-                                        </HBox>
-                                        <HBox alignment="CENTER" prefWidth="452.0">
-                                            <children>
-                                                <Label alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="94.0" text="Course:">
-                                                    <font>
-                                                        <Font name="System Bold" size="14.0" />
-                                                    </font>
-                                                    <HBox.margin>
-                                                        <Insets right="10.0" />
-                                                    </HBox.margin>
-                                                </Label>
-                                                <TextField fx:id="courseTextField" editable="false" prefHeight="26.0" prefWidth="239.0" style="-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.7) , 10, 0.0 , 0 , 2 );" />
-                                            </children>
-                                            <VBox.margin>
+                                             </padding>
+                                                    </HBox>
+                                                    <HBox alignment="CENTER" layoutX="11.0" layoutY="63.0" prefHeight="26.0" prefWidth="350.0">
+                                                        <children>
+                                                            <Label alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="94.0" text="Course:">
+                                                                <font>
+                                                                    <Font name="System Bold" size="14.0" />
+                                                                </font>
+                                                                <HBox.margin>
+                                                                    <Insets right="10.0" />
+                                                                </HBox.margin>
+                                                            </Label>
+                                                            <TextField fx:id="courseTextField" editable="false" prefHeight="26.0" prefWidth="239.0" style="-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.7) , 10, 0.0 , 0 , 2 );" />
+                                                        </children>
+                                             <padding>
                                                 <Insets top="20.0" />
-                                            </VBox.margin>
-                                        </HBox>
-                                        <HBox alignment="CENTER" prefHeight="24.0" prefWidth="468.0">
-                                            <children>
-                                                <Separator prefHeight="17.0" prefWidth="469.0" />
-                                            </children>
-                                            <VBox.margin>
+                                             </padding>
+                                                    </HBox>
+                                          <HBox alignment="CENTER" layoutX="11.0" layoutY="108.0" prefHeight="26.0" prefWidth="350.0">
+                                             <children>
+                                                <Label alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="94.0" text="Faculty:">
+                                                   <font>
+                                                      <Font name="System Bold" size="14.0" />
+                                                   </font>
+                                                   <HBox.margin>
+                                                      <Insets right="10.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <TextField fx:id="facultyIdTextField" editable="false" prefHeight="26.0" prefWidth="239.0" style="-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.7) , 10, 0.0 , 0 , 2 );" />
+                                             </children>
+                                             <padding>
+                                                <Insets top="20.0" />
+                                             </padding>
+                                          </HBox>
+                                                      <Separator layoutX="-2.0" layoutY="166.0" prefHeight="19.0" prefWidth="387.0">
+                                             <padding>
                                                 <Insets top="10.0" />
-                                            </VBox.margin>
-                                        </HBox>
-                                        <HBox alignment="CENTER" prefWidth="452.0">
-                                            <children>
-                                                <Label prefHeight="20.0" prefWidth="146.0" text="Enter your Project ID:">
-                                                    <font>
-                                                        <Font name="System Bold" size="14.0" />
-                                                    </font>
-                                                    <HBox.margin>
-                                                        <Insets right="10.0" />
-                                                    </HBox.margin>
-                                                </Label>
-                                                <TextField prefHeight="26.0" prefWidth="185.0" promptText="trimester-courseID-group no." style="-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.7) , 10, 0.0 , 0 , 2 );" />
-                                            </children>
-                                            <VBox.margin>
-                                                <Insets />
-                                            </VBox.margin>
-                                        </HBox>
-                                        <HBox alignment="CENTER" prefHeight="35.0" prefWidth="414.0">
-                                            <children>
-                                                <Button mnemonicParsing="false" prefHeight="34.0" prefWidth="159.0" text="Request To Allocate" textFill="WHITE">
-                                                    <font>
-                                                        <Font name="System Bold" size="14.0" />
-                                                    </font>
-                                                </Button>
-                                            </children>
-                                            <VBox.margin>
-                                                <Insets top="20.0" />
-                                            </VBox.margin>
-                                        </HBox>
+                                             </padding>
+                                          </Separator>
+                                                    <HBox alignment="CENTER" layoutX="56.0" layoutY="202.0" prefHeight="35.0" prefWidth="270.0">
+                                             <children>
+                                                            <Button mnemonicParsing="false" onAction="#allocateStudents" prefHeight="49.0" prefWidth="159.0" text="Allocate Students" textFill="WHITE">
+                                                                <font>
+                                                                    <Font name="System Bold" size="14.0" />
+                                                                </font>
+                                                            </Button>
+                                             </children>
+                                                    </HBox>
+                                       </children>
+                                    </AnchorPane>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="275.0" prefWidth="336.0">
+                                       <children>
+                                          <Label alignment="CENTER" layoutX="92.0" layoutY="14.0" prefHeight="35.0" prefWidth="166.0" text="Students">
+                                             <font>
+                                                <Font name="System Bold" size="18.0" />
+                                             </font>
+                                          </Label>
+                                          <TextArea fx:id="studentTextarea" layoutX="51.0" layoutY="49.0" prefHeight="200.0" prefWidth="250.0" style="-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.7) , 10, 0.0 , 0 , 2 )dropshadow( gaussian , rgba(0,0,0,0.7) , 10, 0.0 , 0 , 2 );">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font></TextArea>
+                                       </children>
+                                    </AnchorPane>
+                                </items>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </SplitPane>
                                     </children>
                                 </VBox>
                             </children>
