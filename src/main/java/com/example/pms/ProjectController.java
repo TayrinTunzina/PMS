@@ -5,10 +5,12 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -31,7 +33,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
+import javafx.scene.control.Alert;
 
 
 
@@ -212,6 +214,10 @@ public class ProjectController {
 
 
 
+
+
+
+
     @FXML
     private void onWatchVideoButtonClicked(ActionEvent event) {
         String selectedProjectId = projectIdTextField.getText();
@@ -228,19 +234,47 @@ public class ProjectController {
                 // Create a Media object from the temporary file
                 javafx.scene.media.Media media = new javafx.scene.media.Media(tempFile.toURI().toString());
 
-
                 // Create a MediaPlayer
                 MediaPlayer mediaPlayer = new MediaPlayer(media);
 
-                // Create a MediaView and set the MediaPlayer
+                // Create a MediaView
                 MediaView mediaView = new MediaView(mediaPlayer);
 
-                // Create a StackPane to hold the MediaView
-                StackPane pane = new StackPane();
-                pane.getChildren().add(mediaView);
+                // Create play/pause button
+                Button playPauseButton = new Button("Play");
+                playPauseButton.setOnAction(e -> {
+                    if (mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
+                        mediaPlayer.pause();
+                        playPauseButton.setText("Play");
+                    } else {
+                        mediaPlayer.play();
+                        playPauseButton.setText("Pause");
+                    }
+                });
 
-                // Create a new Scene with the StackPane
-                Scene scene = new Scene(pane, 600, 400);
+                // Create seek slider
+                Slider seekSlider = new Slider();
+                seekSlider.setMaxWidth(Double.MAX_VALUE);
+                mediaPlayer.currentTimeProperty().addListener((observable, oldValue, newValue) -> {
+                    seekSlider.setValue(newValue.toSeconds());
+                });
+                seekSlider.setOnMousePressed(e -> mediaPlayer.pause());
+                seekSlider.setOnMouseReleased(e -> mediaPlayer.seek(javafx.util.Duration.seconds(seekSlider.getValue())));
+
+                // Add play/pause button and seek slider to an HBox
+                HBox controls = new HBox(10, playPauseButton, seekSlider);
+                controls.setPrefHeight(40);
+
+                // Center align the HBox
+                controls.setAlignment(Pos.CENTER);
+
+                // Create a BorderPane to hold the MediaView and controls
+                BorderPane root = new BorderPane();
+                root.setCenter(mediaView);
+                root.setBottom(controls);
+
+                // Create a Scene with the root BorderPane
+                Scene scene = new Scene(root, 600, 530);
 
                 // Create a new Stage and set the Scene
                 Stage stage = new Stage();
@@ -258,6 +292,26 @@ public class ProjectController {
             showAlert(Alert.AlertType.WARNING, "No Video Available", "No video found for the selected project.");
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private File createTempFile(byte[] videoBytes) {
         try {
@@ -362,15 +416,6 @@ public class ProjectController {
 
         return null; // Return null if no report found or an exception occurs
     }
-
-
-
-
-
-
-
-
-
 
 
     @FXML
