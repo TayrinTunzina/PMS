@@ -12,14 +12,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -44,6 +43,9 @@ public class NewsfeedController implements Initializable {
 
     @FXML
     private Label emailLabel;
+
+    @FXML
+    private ImageView profilePic;
 
     private Connection connection;
     private String loggedInUserId;
@@ -177,6 +179,17 @@ public class NewsfeedController implements Initializable {
                 nameLabel.setText(name);
                 emailLabel.setText(email);
 
+                // Retrieve the profile picture as a byte array from the database
+                byte[] profilePictureBytes = resultSet.getBytes("pic");
+
+                // Check if the profile picture bytes are not null before creating ByteArrayInputStream
+                if (profilePictureBytes != null) {
+                    // Convert the byte array to an image
+                    ByteArrayInputStream bis = new ByteArrayInputStream(profilePictureBytes);
+                    Image profilePicture = new Image(bis);
+                    profilePic.setImage(profilePicture);
+                }
+
                 // Log the retrieved user details
                 System.out.println("User details retrieved successfully:");
                 System.out.println("User ID: " + userName);
@@ -194,6 +207,9 @@ public class NewsfeedController implements Initializable {
             // Handle the exception
         }
     }
+
+
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

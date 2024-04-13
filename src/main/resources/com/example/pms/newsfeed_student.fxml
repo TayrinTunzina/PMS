@@ -25,9 +25,9 @@
             <children>
                 <VBox alignment="CENTER" prefHeight="290.0" prefWidth="197.0" styleClass="card1" stylesheets="@../../../style/newsfeed.css">
                     <children>
-                        <ImageView fitHeight="130.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="profilePic" fitHeight="130.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../../../img/pp1.png" />
+                                <Image url="@../../../img/default-avatar.png" />
                             </image>
                             <VBox.margin>
                                 <Insets bottom="6.0" top="10.0" />

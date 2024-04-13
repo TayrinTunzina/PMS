@@ -33,7 +33,7 @@
                     <children>
                         <HBox alignment="CENTER" prefHeight="51.0" prefWidth="1000.0">
                             <children>
-                                <Label alignment="TOP_CENTER" prefHeight="62.0" prefWidth="430.0" text="Send Project Details To Faculty">
+                                <Label alignment="TOP_CENTER" prefHeight="51.0" prefWidth="532.0" text="Send Project Details To Faculty &amp; Get Feedback">
                                     <font>
                                         <Font name="System Bold" size="23.0" />
                                     </font>
@@ -43,7 +43,7 @@
                             <children>
                                 <VBox prefHeight="133.0" prefWidth="414.0" styleClass="card5" stylesheets="@../../../style/newsfeed.css">
                                     <children>
-                                        <!-- Course dropdown -->
+                                        <!-- project dropdown -->
                                         <HBox alignment="CENTER">
                                             <Label prefHeight="20.0" prefWidth="133.0" text="Select Project ID: ">
                                                 <font>
@@ -53,7 +53,7 @@
                                                     <Insets />
                                                 </HBox.margin>
                                             </Label>
-                                            <ComboBox prefHeight="27.0" prefWidth="182.0" styleClass="comboBox2">
+                                            <ComboBox fx:id="projectIdComboBox2" prefHeight="27.0" prefWidth="182.0" styleClass="comboBox2">
                                                 <HBox.margin>
                                                     <Insets />
                                                 </HBox.margin>
@@ -64,7 +64,7 @@
                                         </HBox>
                                         <HBox alignment="CENTER" prefHeight="35.0" prefWidth="414.0">
                                             <children>
-                                                <Button mnemonicParsing="false" prefHeight="34.0" prefWidth="130.0" text="Search" textFill="WHITE">
+                                                <Button mnemonicParsing="false" onAction="#onSearchButtonClicked" prefHeight="34.0" prefWidth="130.0" text="Search" textFill="WHITE">
                                                     <font>
                                                         <Font name="System Bold" size="14.0" />
                                                     </font>
@@ -84,13 +84,13 @@
                         <HBox prefHeight="44.0" prefWidth="1000.0" />
                         <HBox alignment="CENTER" prefHeight="308.0" prefWidth="1000.0">
                             <children>
-                                <VBox prefHeight="308.0" prefWidth="742.0" stylesheets="@../../../style/newsfeed.css">
+                                <VBox fx:id="projectDetailsCard" prefHeight="308.0" prefWidth="742.0" stylesheets="@../../../style/newsfeed.css">
                                     <children>
                                         <SplitPane dividerPositions="0.49433045356371486" prefHeight="302.0" prefWidth="742.0" styleClass="card5">
                                             <items>
                                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="275.0" prefWidth="387.0">
                                                     <children>
-                                                        <HBox alignment="CENTER" layoutX="15.0" layoutY="22.0">
+                                                        <HBox alignment="CENTER" layoutX="14.0">
                                                             <children>
                                                                 <Label alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="94.0" text="Project ID:">
                                                                     <font>
@@ -106,7 +106,7 @@
                                                                 <Insets top="20.0" />
                                                             </padding>
                                                         </HBox>
-                                                        <HBox alignment="CENTER" layoutX="9.0" layoutY="135.0" prefHeight="51.0" prefWidth="355.0">
+                                                        <HBox alignment="CENTER" layoutX="4.0" layoutY="97.0" prefHeight="51.0" prefWidth="355.0">
                                                             <children>
                                                                 <HBox alignment="CENTER" prefHeight="31.0" prefWidth="371.0">
                                                                     <children>
@@ -118,7 +118,7 @@
                                                                                 <Insets right="10.0" />
                                                                             </HBox.margin>
                                                                         </Label>
-                                                                        <Button mnemonicParsing="false" prefHeight="11.0" prefWidth="216.0">
+                                                                        <Button mnemonicParsing="false" onAction="#onChooseVideoButtonClicked" prefHeight="11.0" prefWidth="216.0">
                                                                             <graphic>
                                                                                 <HBox alignment="CENTER" prefHeight="23.0" prefWidth="212.0" spacing="5.0">
                                                                                     <children>
@@ -135,7 +135,7 @@
                                                                                                 <Font name="System Bold" size="14.0" />
                                                                                             </font>
                                                                                         </Label>
-                                                                                        <TextField editable="false" prefHeight="23.0" prefWidth="86.0">
+                                                                                        <TextField fx:id="videoFileTextField" editable="false" prefHeight="23.0" prefWidth="86.0">
                                                                                             <font>
                                                                                                 <Font name="Arial Bold" size="12.0" />
                                                                                             </font>
@@ -161,21 +161,21 @@
                                                                 <Insets top="20.0" />
                                                             </padding>
                                                         </HBox>
-                                                        <Separator layoutX="-4.0" layoutY="210.0" prefHeight="19.0" prefWidth="371.0">
+                                                        <Separator layoutX="-4.0" layoutY="150.0" prefHeight="19.0" prefWidth="371.0">
                                                             <padding>
                                                                 <Insets top="10.0" />
                                                             </padding>
                                                         </Separator>
-                                                        <HBox alignment="CENTER" layoutX="46.0" layoutY="244.0" prefHeight="35.0" prefWidth="270.0">
+                                                        <HBox alignment="CENTER" layoutX="46.0" layoutY="242.0" prefHeight="35.0" prefWidth="270.0">
                                                             <children>
-                                                                <Button mnemonicParsing="false" prefHeight="49.0" prefWidth="159.0" text="Get Feedback" textFill="WHITE">
+                                                                <Button mnemonicParsing="false" onAction="#onGetFeedbackButtonClicked" prefHeight="49.0" prefWidth="159.0" text="Get Feedback" textFill="WHITE">
                                                                     <font>
                                                                         <Font name="System Bold" size="14.0" />
                                                                     </font>
                                                                 </Button>
                                                             </children>
                                                         </HBox>
-                                                        <HBox alignment="CENTER" layoutX="6.0" layoutY="84.0" prefHeight="35.0" prefWidth="350.0">
+                                                        <HBox alignment="CENTER" layoutX="6.0" layoutY="46.0" prefHeight="35.0" prefWidth="350.0">
                                                             <children>
                                                                 <HBox alignment="CENTER" prefHeight="18.0" prefWidth="350.0">
                                                                     <children>
@@ -187,7 +187,7 @@
                                                                                 <Insets right="10.0" />
                                                                             </HBox.margin>
                                                                         </Label>
-                                                                        <Button mnemonicParsing="false" prefHeight="11.0" prefWidth="216.0">
+                                                                        <Button mnemonicParsing="false" onAction="#onChooseReportButtonClicked" prefHeight="11.0" prefWidth="216.0">
                                                                             <graphic>
                                                                                 <HBox alignment="CENTER" prefHeight="23.0" prefWidth="212.0" spacing="5.0">
                                                                                     <children>
@@ -204,7 +204,7 @@
                                                                                                 <Font name="System Bold" size="14.0" />
                                                                                             </font>
                                                                                         </Label>
-                                                                                        <TextField editable="false" prefHeight="23.0" prefWidth="86.0">
+                                                                                        <TextField fx:id="reportFileTextField" editable="false" prefHeight="23.0" prefWidth="86.0">
                                                                                             <font>
                                                                                                 <Font name="Arial Bold" size="12.0" />
                                                                                             </font>
@@ -230,6 +230,19 @@
                                                                 <Insets top="20.0" />
                                                             </padding>
                                                         </HBox>
+                                          <HBox alignment="CENTER" layoutX="6.0" layoutY="179.0" prefHeight="48.0" prefWidth="350.0">
+                                             <children>
+                                                <Label alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="89.0" text="Feedback: ">
+                                                   <font>
+                                                      <Font name="System Bold" size="14.0" />
+                                                   </font>
+                                                   <HBox.margin>
+                                                      <Insets right="10.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <TextField fx:id="feedbackTextField" editable="false" prefHeight="35.0" prefWidth="224.0" style="-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.7) , 10, 0.0 , 0 , 2 );" />
+                                             </children>
+                                          </HBox>
                                                     </children>
                                                 </AnchorPane>
                                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="275.0" prefWidth="336.0">
@@ -239,7 +252,7 @@
                                                                 <Font name="System Bold" size="18.0" />
                                                             </font>
                                                         </Label>
-                                                        <TextArea layoutX="51.0" layoutY="49.0" prefHeight="224.0" prefWidth="274.0" promptText="Enter Project Name &amp; Feature List..." style="-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.7) , 10, 0.0 , 0 , 2 )dropshadow( gaussian , rgba(0,0,0,0.7) , 10, 0.0 , 0 , 2 );">
+                                                        <TextArea fx:id="projectFeaturesTextArea" layoutX="51.0" layoutY="49.0" prefHeight="224.0" prefWidth="274.0" promptText="Enter Project Name &amp; Feature List..." style="-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.7) , 10, 0.0 , 0 , 2 )dropshadow( gaussian , rgba(0,0,0,0.7) , 10, 0.0 , 0 , 2 );">
                                                             <font>
                                                                 <Font size="14.0" />
                                                             </font></TextArea>
