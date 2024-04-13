@@ -10,11 +10,16 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import javax.print.attribute.standard.Media;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -26,6 +31,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+
+
 
 public class ProjectController {
 
@@ -39,7 +47,13 @@ public class ProjectController {
     private ComboBox<String> projectIdComboBox2;
 
     @FXML
+    private ComboBox<String> projectIdComboBox3;
+
+    @FXML
     private VBox projectDetailsCard;
+
+    @FXML
+    private VBox projectDetailsCard2;
 
     @FXML
     private TextArea projectFeaturesTextArea;
@@ -91,6 +105,7 @@ public class ProjectController {
     @FXML
     private Button seeDetailsButton;
 
+
     // Initialize method to establish database connection and populate courseComboBox
     @FXML
     public void initialize() {
@@ -118,7 +133,280 @@ public class ProjectController {
         if (projectDetailsCard != null) {
             projectDetailsCard.setVisible(false); // Hide the second card initially
         }
+
+        if (projectIdComboBox3 != null) {
+            populateComboBox3();
+        }
+
+        if (projectDetailsCard2 != null) {
+            projectDetailsCard2.setVisible(false);
+        }
+
     }
+
+
+    private void populateComboBox3() {
+        String loggedInUserId = UserService.getLoggedInUserId();
+
+        try {
+
+            String sql = "SELECT DISTINCT p_id FROM project WHERE f_id = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, loggedInUserId);
+
+            // Execute the query
+            ResultSet resultSet = statement.executeQuery();
+
+            // Populate the ComboBox with project IDs
+            while (resultSet.next()) {
+                String projectId = resultSet.getString("p_id");
+                projectIdComboBox3.getItems().add(projectId);
+            }
+
+            // Close the result set and statement
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle the exception appropriately
+        }
+    }
+
+    @FXML
+    private void onSearchButtonClicked2(ActionEvent event) {
+        String selectedProjectId = projectIdComboBox3.getValue();
+
+        // Fetch project features based on the selected project ID
+        String projectFeatures = fetchProjectFeatures(selectedProjectId);
+
+        // Fetch remarks based on the selected project ID
+        String remarks = fetchRemarks(selectedProjectId);
+
+        // Display the project ID
+        projectIdTextField.setText(selectedProjectId);
+
+        // Display project features in the projectFeaturesTextArea
+        if (projectFeatures != null) {
+            projectFeaturesTextArea.setText(projectFeatures);
+        } else {
+            projectFeaturesTextArea.clear();
+        }
+
+        // Display remarks in the feedbackTextField
+        if (remarks != null) {
+            feedbackTextField.setText(remarks);
+        } else {
+            feedbackTextField.clear();
+        }
+
+        // Show the search results card
+        projectDetailsCard2.setVisible(true);
+    }
+
+
+
+
+
+
+
+
+
+
+
+    @FXML
+    private void onWatchVideoButtonClicked(ActionEvent event) {
+        String selectedProjectId = projectIdTextField.getText();
+
+        // Fetch the video bytes based on the selected project ID
+        byte[] videoBytes = fetchVideo(selectedProjectId);
+
+        // Play the video
+        if (videoBytes != null) {
+            // Create a temporary file from the byte array
+            File tempFile = createTempFile(videoBytes);
+
+            if (tempFile != null) {
+                // Create a Media object from the temporary file
+                javafx.scene.media.Media media = new javafx.scene.media.Media(tempFile.toURI().toString());
+
+
+                // Create a MediaPlayer
+                MediaPlayer mediaPlayer = new MediaPlayer(media);
+
+                // Create a MediaView and set the MediaPlayer
+                MediaView mediaView = new MediaView(mediaPlayer);
+
+                // Create a StackPane to hold the MediaView
+                StackPane pane = new StackPane();
+                pane.getChildren().add(mediaView);
+
+                // Create a new Scene with the StackPane
+                Scene scene = new Scene(pane, 600, 400);
+
+                // Create a new Stage and set the Scene
+                Stage stage = new Stage();
+                stage.setScene(scene);
+
+                // Show the Stage
+                stage.show();
+
+                // Start playing the video
+                mediaPlayer.play();
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Video Playback Error", "Failed to create temporary file.");
+            }
+        } else {
+            showAlert(Alert.AlertType.WARNING, "No Video Available", "No video found for the selected project.");
+        }
+    }
+
+    private File createTempFile(byte[] videoBytes) {
+        try {
+            // Create a temporary file
+            File tempFile = File.createTempFile("temp", ".mp4");
+
+            // Write the video bytes to the temporary file
+            try (FileOutputStream fos = new FileOutputStream(tempFile)) {
+                fos.write(videoBytes);
+            }
+
+            return tempFile;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @FXML
+    private void onDownloadReportButtonClicked(ActionEvent event) {
+        String selectedProjectId = projectIdTextField.getText();
+
+        // Fetch the report bytes based on the selected project ID
+        byte[] reportBytes = fetchReport(selectedProjectId);
+
+        if (reportBytes != null) {
+            // Choose a location to save the report file
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save Project Report");
+            fileChooser.setInitialFileName(selectedProjectId + "_report.pdf"); // Set default file name
+
+            // Show save dialog
+            File selectedFile = fileChooser.showSaveDialog(null);
+
+            if (selectedFile != null) {
+                // Save the report bytes to the selected file
+                try (FileOutputStream fos = new FileOutputStream(selectedFile)) {
+                    fos.write(reportBytes);
+                    showAlert(Alert.AlertType.INFORMATION, "Report Downloaded", "Report downloaded successfully.");
+                } catch (IOException e) {
+                    e.printStackTrace(); // Handle IO exception
+                    showAlert(Alert.AlertType.ERROR, "Error", "Failed to download report.");
+                }
+            }
+        } else {
+            showAlert(Alert.AlertType.WARNING, "No Report Available", "No report found for the selected project.");
+        }
+    }
+
+    private byte[] fetchVideo(String projectId) {
+        try {
+            // Your SQL query to fetch video bytes based on the project ID
+            String sql = "SELECT video FROM project WHERE p_id = ?";
+
+            // Create a prepared statement
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, projectId);
+
+            // Execute the query
+            ResultSet resultSet = statement.executeQuery();
+
+            // Check if the result set has data
+            if (resultSet.next()) {
+                // Retrieve the video bytes from the result set
+                return resultSet.getBytes("video");
+            }
+
+            // Close the result set and statement
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle the exception appropriately
+        }
+
+        return null; // Return null if no video found or an exception occurs
+    }
+
+    private byte[] fetchReport(String projectId) {
+        try {
+            // Your SQL query to fetch report bytes based on the project ID
+            String sql = "SELECT report FROM project WHERE p_id = ?";
+
+            // Create a prepared statement
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, projectId);
+
+            // Execute the query
+            ResultSet resultSet = statement.executeQuery();
+
+            // Check if the result set has data
+            if (resultSet.next()) {
+                // Retrieve the report bytes from the result set
+                return resultSet.getBytes("report");
+            }
+
+            // Close the result set and statement
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle the exception appropriately
+        }
+
+        return null; // Return null if no report found or an exception occurs
+    }
+
+
+
+
+
+
+
+
+
+
+
+    @FXML
+    private void onSendFeedbackButtonClicked(ActionEvent event) {
+        String projectId = projectIdTextField.getText();
+        String feedback = feedbackTextField.getText(); // Get the content of the feedbackTextField
+
+        try {
+            // Update the project table with the new information
+            String sql = "UPDATE project SET remark = ? WHERE p_id = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, feedback);
+            statement.setString(2, projectId);
+
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                showAlert(Alert.AlertType.INFORMATION, "Feedback Updated", "Feedback updated successfully.");
+                clearFieldsAndHideCard2();
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Feedback Update Failed", "Failed to update feedback.");
+                clearFieldsAndHideCard2();
+            }
+
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle the exception appropriately
+        }
+    }
+
+
+
+
+
+
+
+
 
 
     private void populateComboBox2() {
@@ -242,16 +530,6 @@ public class ProjectController {
             byte[] videoBytes = readBytesFromFile(selectedFile);
         }
     }
-
-
-
-
-
-
-
-
-
-
 
     private byte[] readBytesFromFile(File file) {
         try {
@@ -673,7 +951,16 @@ public class ProjectController {
         reportFileTextField.clear();
         videoFileTextField.clear();
         projectFeaturesTextArea.clear();
+        feedbackTextField.clear();
         projectDetailsCard.setVisible(false);
+    }
+
+    private void clearFieldsAndHideCard2() {
+        projectIdComboBox3.getSelectionModel().clearSelection();
+        projectIdTextField.clear();
+        projectFeaturesTextArea.clear();
+        feedbackTextField.clear();
+        projectDetailsCard2.setVisible(false);
     }
 
 
