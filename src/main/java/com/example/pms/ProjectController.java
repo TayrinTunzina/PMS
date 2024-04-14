@@ -413,13 +413,6 @@ public class ProjectController {
 
 
 
-
-
-
-
-
-
-
     private void populateComboBox2() {
         String loggedInUserId = UserService.getLoggedInUserId();
 
