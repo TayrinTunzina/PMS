@@ -216,14 +216,6 @@ public class WinnersController {
         positionComboBox.getSelectionModel().clearSelection();
     }
 
-
-
-
-
-
-
-
-
     private void populateComboBox2() {
         try {
             String sql = "SELECT project_id FROM winners";
@@ -269,11 +261,7 @@ public class WinnersController {
         // Set the items of the ComboBox to the filtered list
         projectIdComboBox1.setItems(filteredList);
     }
-
-
-
-
-
+    
 
     @FXML
     void onSearchButtonClicked2(ActionEvent event) {

@@ -33,9 +33,9 @@
                     <children>
                         <HBox alignment="CENTER" prefHeight="51.0" prefWidth="1000.0">
                             <children>
-                                <Label alignment="CENTER" prefHeight="32.0" prefWidth="430.0" text="Allocate Students" textFill="WHITE">
+                                <Label alignment="CENTER" prefHeight="32.0" prefWidth="430.0" text="Allocate Students" textFill="WHITE" underline="true">
                                     <font>
-                                        <Font name="System Bold" size="24.0" />
+                                        <Font name="Century Schoolbook Bold" size="24.0" />
                                     </font>
                                 </Label>
                             </children></HBox>

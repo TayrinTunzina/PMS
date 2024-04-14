@@ -33,9 +33,9 @@
                     <children>
                         <HBox alignment="CENTER" prefHeight="51.0" prefWidth="1000.0">
                             <children>
-                                <Label alignment="CENTER" prefHeight="47.0" prefWidth="430.0" text="Send Project Feedback To Students">
+                                <Label alignment="CENTER" prefHeight="47.0" prefWidth="430.0" text="Send Project Feedback To Students" underline="true">
                                     <font>
-                                        <Font name="System Bold" size="23.0" />
+                                        <Font name="Century Schoolbook Bold" size="23.0" />
                                     </font>
                            <HBox.margin>
                               <Insets bottom="20.0" top="20.0" />

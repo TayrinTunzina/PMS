@@ -34,8 +34,35 @@
 }
 
 .button:hover {
-    -fx-background-color: #8096a0;
+    -fx-background-color: #94a7b0;
 }
+
+.button2{
+    -fx-background-color: #FF8000FF;
+    -fx-text-fill: white;
+}
+.button2:hover {
+    -fx-background-color: #BFCCD3FF;
+    -fx-text-fill: black;
+}
+
+.button3{
+    -fx-background-color:  #FF0F0F;
+    -fx-text-fill: white;
+}
+.button3:hover {
+    -fx-background-color: #BFCCD3FF;
+    -fx-text-fill: black;
+}
+.button4{
+    -fx-background-color:  white;
+    -fx-text-fill: black;
+}
+.button4:hover {
+    -fx-background-color: #BFCCD3FF;
+    -fx-text-fill: black;
+}
+
 
 .navbar-button {
     -fx-background-color: #ff8000;

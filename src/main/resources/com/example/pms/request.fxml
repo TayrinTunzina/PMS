@@ -32,9 +32,9 @@
                     <children>
                   <HBox alignment="CENTER" prefHeight="51.0" prefWidth="1000.0">
                      <children>
-                        <Label alignment="CENTER" prefHeight="32.0" prefWidth="430.0" text="Send Request To Faculty For Project Allocation" textFill="WHITE">
+                        <Label alignment="CENTER" prefHeight="32.0" prefWidth="455.0" text="Send Request To Faculty For Project Allocation" textFill="WHITE" underline="true">
                            <font>
-                              <Font name="System Bold" size="18.0" />
+                              <Font name="Century Schoolbook Bold" size="18.0" />
                            </font>
                         </Label>
                      </children></HBox>
