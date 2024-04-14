@@ -331,7 +331,7 @@
                <children>
                   <ScrollPane prefHeight="679.0" prefWidth="664.0" style="-fx-background-color: transparent;">
                      <content>
-                        <VBox fx:id="posted" alignment="TOP_CENTER" prefHeight="681.0" prefWidth="550.0" spacing="25.0" style="-fx-background-color: #F0F2F5;">
+                        <VBox alignment="TOP_CENTER" prefHeight="681.0" prefWidth="550.0" spacing="25.0" style="-fx-background-color: #F0F2F5;">
                            <children>
                               <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="197.0" prefWidth="652.0">
                                  <padding>
@@ -407,6 +407,7 @@
                                     </HBox>
                                  </children>
                               </VBox>
+                              <VBox fx:id="posted" alignment="TOP_CENTER" prefHeight="522.0" prefWidth="652.0" spacing="25.0" />
                            </children>
                         </VBox>
                      </content>

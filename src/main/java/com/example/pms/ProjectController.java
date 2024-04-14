@@ -204,20 +204,6 @@ public class ProjectController {
         projectDetailsCard2.setVisible(true);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     @FXML
     private void onWatchVideoButtonClicked(ActionEvent event) {
         String selectedProjectId = projectIdTextField.getText();
@@ -292,26 +278,6 @@ public class ProjectController {
             showAlert(Alert.AlertType.WARNING, "No Video Available", "No video found for the selected project.");
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     private File createTempFile(byte[] videoBytes) {
         try {

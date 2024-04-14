@@ -27,6 +27,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -129,13 +130,27 @@ public class NewsfeedController implements Initializable {
         alert.showAndWait();
     }
 
-    private void refreshPage() {
+
+    public void removeDeletedPost(int deletedPostId) {
+        Iterator<Post> iterator = posts.iterator();
+        while (iterator.hasNext()) {
+            Post post = iterator.next();
+            if (post.getPostId() == deletedPostId) {
+                iterator.remove();
+                break; // Assuming postId is unique, exit loop after removing the post
+            }
+        }
+    }
+
+    public void refreshPage() {
         // Clear existing posts from UI
         posted.getChildren().clear();
 
         // Reload the list of posts
         posts.clear();
         posts.addAll(data()); // Fetch updated list of posts from the database
+        postContentTextField.clear();
+        taFile.clear();
 
         // Update the UI with the refreshed list of posts
         try {
@@ -145,6 +160,8 @@ public class NewsfeedController implements Initializable {
 
                 VBox vBox = fxmlLoader.load();
                 PostController postController = fxmlLoader.getController();
+                postController.setNewsfeedController(this); // Pass reference to NewsfeedController
+                postController.setPostId(post.getPostId()); // Set the postId
                 postController.setData(post);
                 posted.getChildren().add(vBox);
             }
@@ -152,6 +169,7 @@ public class NewsfeedController implements Initializable {
             e.printStackTrace();
         }
     }
+
 
 
 
@@ -233,6 +251,7 @@ public class NewsfeedController implements Initializable {
                 PostController postController = fxmlLoader.getController();
                 postController.setData(post);
                 postController.setPostId(post.getPostId()); // Set the postId in the PostController
+                postController.setNewsfeedController(this); // Pass reference to NewsfeedController
 
                 posted.getChildren().add(vBox);
             }
@@ -374,6 +393,35 @@ public class NewsfeedController implements Initializable {
     @FXML
     void add_winners(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("addWinners.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    @FXML
+    void back(ActionEvent event) throws IOException {
+        String fxmlFile;
+        // Get the role of the logged-in user from UserService
+        String userRole = UserService.getLoggedInUserRole();
+
+        switch (userRole) {
+            case "Admin":
+                fxmlFile = "Newsfeed.fxml";
+                break;
+            case "Student":
+                fxmlFile = "newsfeed_student.fxml";
+                break;
+            case "Faculty":
+                fxmlFile = "newsfeed_faculty.fxml";
+                break;
+            default:
+                // Handle unknown role
+                return;
+        }
+
+        // Load the FXML file and navigate to it
+        Parent root = FXMLLoader.load(getClass().getResource(fxmlFile));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);

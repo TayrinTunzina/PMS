@@ -16,7 +16,7 @@
          <children>
             <HBox alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="83.0" spacing="5.0">
                <children>
-                  <ImageView fx:id="deleteIcon" fitHeight="16.0" fitWidth="20.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="deleteIcon" fitHeight="16.0" fitWidth="20.0" nodeOrientation="INHERIT" onMouseClicked="#handleDeleteIconClick" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../img/delete.png" />
                      </image>

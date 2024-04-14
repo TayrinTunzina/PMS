@@ -2,6 +2,7 @@ package com.example.pms;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -37,6 +38,78 @@ public class PostController {
 
     @FXML
     private int postId;
+
+    private NewsfeedController newsfeedController;
+
+    // Other methods and fields
+
+    public void setNewsfeedController(NewsfeedController newsfeedController) {
+        this.newsfeedController = newsfeedController;
+    }
+
+    private void someMethod() {
+        // Call refreshPage from NewsfeedController
+        if (newsfeedController != null) {
+            newsfeedController.refreshPage();
+        }
+    }
+
+    @FXML
+    private void initialize() {
+        String userRole = UserService.getLoggedInUserRole();
+        if ("Admin".equals(userRole)) {
+            deleteIcon.setVisible(true);
+        } else {
+            deleteIcon.setVisible(false);
+        }
+    }
+
+    @FXML
+    private void handleDeleteIconClick() {
+        String userRole = UserService.getLoggedInUserRole();
+        if ("Admin".equals(userRole)) {
+            deletePost(postId);
+        } else {
+            System.out.println("Permission denied. Only admins can delete posts.");
+        }
+    }
+
+    private void deletePost(int postId) {
+        try {
+            String query = "DELETE FROM post WHERE post_id = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, postId);
+            int rowsAffected = statement.executeUpdate();
+            statement.close();
+
+            if (rowsAffected > 0) {
+                System.out.println("Post deleted successfully.");
+                // Show alert for successful deletion
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Post Deleted");
+                alert.setHeaderText(null);
+                alert.setContentText("The post has been successfully deleted.");
+                alert.showAndWait();
+
+                // Remove the deleted post from the UI
+                if (newsfeedController != null) {
+                    newsfeedController.removeDeletedPost(postId);
+                    newsfeedController.refreshPage(); // Ensure to call refreshPage after removing the post
+                }
+
+                // Call someMethod to refresh the page or update UI if needed
+                someMethod();
+            } else {
+                System.out.println("No post was deleted. postId: " + postId);
+                someMethod();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error deleting post. postId: " + postId);
+            System.out.println("SQL Exception: " + e.getMessage());
+        }
+    }
+
 
     public int getPostId() {
         return postId;
@@ -167,7 +240,6 @@ public class PostController {
         }
     }
 
-
     public void setData(Post post) {
         postText.setText(post.getPostText());
         date.setText(post.getFormattedDate());
@@ -192,11 +264,7 @@ public class PostController {
         if (isLiked) {
             likeIcon.setImage(new Image(getClass().getResource("/img/red_heart.png").toExternalForm()));
         }
-//
-//        // Debugging line to check if the post is liked or not
-//        System.out.println("Post " + post.getPostId() + " is " + (isLiked ? "liked" : "not liked") + " by user " + UserService.getLoggedInUserId());
     }
-
 
     // Utility method to convert Blob data to Image
     private Image convertBlobToImage(byte[] blobBytes) throws IOException {

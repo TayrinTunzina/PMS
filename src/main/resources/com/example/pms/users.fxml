@@ -26,7 +26,7 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="600.0" prefWidth="1000.0" stylesheets="@../../../style/lab.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pms.UsersController">
+<BorderPane prefHeight="600.0" prefWidth="1000.0" stylesheets="@../../../style/lab.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pms.NewsfeedController">
     <left>
         <VBox prefHeight="602.0" prefWidth="306.0" spacing="15.0" style="-fx-border-color: #382348; -fx-border-radius: 30; -fx-border-width: 3; -fx-background-color: linear-gradient(from 90.5303% 89.3939% to 99.6212% 13.6364%, #ffffff 0.0%, #ff9900 80.0%, #000000 100.0%); -fx-background-radius: 30; -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.7) , 10, 0.0 , 0 , 2 );" stylesheets="@../../../style/newsfeed.css" BorderPane.alignment="CENTER">
             <children>
@@ -146,7 +146,7 @@
             </ImageView>
             <Pane layoutX="776.0" prefHeight="62.0" prefWidth="136.0" AnchorPane.rightAnchor="0.0">
                <children>
-                  <Button alignment="CENTER" contentDisplay="CENTER" layoutX="9.0" layoutY="13.0" mnemonicParsing="false" onAction="#newsfeed" prefHeight="38.0" prefWidth="118.0" stylesheets="@../../../style/newsfeed.css" text="Back">
+                  <Button alignment="CENTER" contentDisplay="CENTER" layoutX="9.0" layoutY="13.0" mnemonicParsing="false" onAction="#back" prefHeight="38.0" prefWidth="118.0" stylesheets="@../../../style/newsfeed.css" text="Back">
                      <font>
                         <Font name="Arial Bold" size="16.0" />
                      </font>
