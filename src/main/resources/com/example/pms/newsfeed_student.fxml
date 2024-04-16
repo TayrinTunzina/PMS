@@ -234,6 +234,12 @@
                         </Button>
                     </children>
                 </Pane>
+            <Button layoutX="992.0" layoutY="18.0" mnemonicParsing="false" onAction="#refresh" prefHeight="26.0" prefWidth="32.0" />
+            <ImageView fitHeight="22.0" fitWidth="30.0" layoutX="997.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../img/refresh.png" />
+               </image>
+            </ImageView>
             </children>
         </AnchorPane>
     </top>
@@ -316,13 +322,13 @@
                             <children>
                                 <ImageView fitHeight="33.0" fitWidth="34.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../../../img/email.png" />
+                                        <Image url="@../../../img/message.png" />
                                     </image>
                                     <HBox.margin>
                                         <Insets right="10.0" />
                                     </HBox.margin>
                                 </ImageView>
-                                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="35.0" prefWidth="124.0" stylesheets="@../../../style/newsfeed.css" text="Mail" textFill="WHITE">
+                                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="35.0" prefWidth="124.0" stylesheets="@../../../style/newsfeed.css" text="Message" textFill="WHITE">
                                     <font>
                                         <Font name="Arial Bold" size="12.0" />
                                     </font>
@@ -353,7 +359,7 @@
                     <children>
                         <ScrollPane prefHeight="679.0" prefWidth="664.0" style="-fx-background-color: transparent;">
                      <content>
-                        <VBox fx:id="posted" alignment="TOP_CENTER" prefHeight="681.0" prefWidth="550.0" spacing="25.0" style="-fx-background-color: #F0F2F5;">
+                        <VBox alignment="TOP_CENTER" prefHeight="681.0" prefWidth="550.0" spacing="25.0" style="-fx-background-color: #F0F2F5;">
                            <children>
                               <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="81.0" prefWidth="652.0">
                                  <padding>
@@ -385,6 +391,7 @@
                                     </HBox>
                                  </children>
                               </VBox>
+                              <VBox fx:id="posted" alignment="TOP_CENTER" prefHeight="559.0" prefWidth="652.0" spacing="25.0" />
                            </children>
                         </VBox>
                      </content>

@@ -68,6 +68,9 @@ public class NewsfeedController implements Initializable {
     private TextField postContentTextField;
 
     @FXML
+    private TextField linkTextField;
+
+    @FXML
     private void handlechoosefilebtn(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose File");
@@ -81,46 +84,41 @@ public class NewsfeedController implements Initializable {
     private void handlePostButton(ActionEvent event) {
         String postContent = postContentTextField.getText();
         String filePath = taFile.getText();
+        String link = linkTextField.getText(); // Get the link
 
         // Validate that both content and file path are provided
         if (postContent.isEmpty() || filePath.isEmpty()) {
             // Show error message to the user
-            // For example, you can use ErrorMassageLabel.setText("Please enter post content and choose a file.");
+            // For example, you can use ErrorMessageLabel.setText("Please enter post content and choose a file.");
             return;
         }
 
-        // Insert the post data into the database
         try (FileInputStream fis = new FileInputStream(new File(filePath))) {
-            String query = "INSERT INTO post (post_image, content) VALUES (?, ?)";
+            String query = "INSERT INTO post (post_image, content, link) VALUES (?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setBinaryStream(1, fis, new File(filePath).length()); // Set the image data as a BLOB
             statement.setString(2, postContent);
+            statement.setString(3, link);
             int rowsInserted = statement.executeUpdate();
 
             if (rowsInserted > 0) {
-                // Post inserted successfully
-                // Show a success message to the user
                 showAlert(Alert.AlertType.INFORMATION, "Success", "Post inserted successfully.");
                 // Refresh the page
                 refreshPage();
             } else {
-                // Failed to insert the post
-                // Show an error message to the user
                 showAlert(Alert.AlertType.ERROR, "Error", "Failed to insert the post.");
             }
 
             statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
-            // Handle the exception (e.g., display an error message)
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            // Handle file not found exception
         } catch (IOException e) {
             e.printStackTrace();
-            // Handle IO exception
         }
     }
+
 
     private void showAlert(Alert.AlertType alertType, String title, String content) {
         Alert alert = new Alert(alertType);
@@ -151,6 +149,7 @@ public class NewsfeedController implements Initializable {
         posts.addAll(data()); // Fetch updated list of posts from the database
         postContentTextField.clear();
         taFile.clear();
+        linkTextField.clear();
 
         // Update the UI with the refreshed list of posts
         try {
@@ -170,7 +169,31 @@ public class NewsfeedController implements Initializable {
         }
     }
 
+    public void refresh(ActionEvent event) {
 
+        posted.getChildren().clear();
+
+        // Reload the list of posts
+        posts.clear();
+        posts.addAll(data()); // Fetch updated list of posts from the database
+
+        // Update the UI with the refreshed list of posts
+        try {
+            for (Post post : posts) {
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("post.fxml"));
+
+                VBox vBox = fxmlLoader.load();
+                PostController postController = fxmlLoader.getController();
+                postController.setNewsfeedController(this); // Pass reference to NewsfeedController
+                postController.setPostId(post.getPostId()); // Set the postId
+                postController.setData(post);
+                posted.getChildren().add(vBox);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     public void setLoggedInUserId(String userId) {
@@ -258,6 +281,7 @@ public class NewsfeedController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
 
@@ -274,6 +298,7 @@ public class NewsfeedController implements Initializable {
             while (resultSet.next()) {
                 Post post = new Post();
                 post.setPostId(resultSet.getInt("post_id")); // Fetch and set the postId
+                post.setPostLink(resultSet.getString("link"));
                 post.setPostText(resultSet.getString("content"));
                 post.setPostImageBlob(resultSet.getBlob("post_image"));
 
@@ -427,4 +452,5 @@ public class NewsfeedController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
+
 }

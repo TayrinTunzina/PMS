@@ -6,8 +6,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -384,6 +390,36 @@ public class UsersController {
         clearFields();
     }
 
+    private Stage stage;
+    private Scene scene;
+
+    @FXML
+    void back(ActionEvent event) throws IOException {
+        String fxmlFile;
+        // Get the role of the logged-in user from UserService
+        String userRole = UserService.getLoggedInUserRole();
+
+        switch (userRole) {
+            case "Admin":
+                fxmlFile = "Newsfeed.fxml";
+                break;
+            case "Student":
+                fxmlFile = "newsfeed_student.fxml";
+                break;
+            case "Faculty":
+                fxmlFile = "newsfeed_faculty.fxml";
+                break;
+            default:
+                // Handle unknown role
+                return;
+        }
+        // Load the FXML file and navigate to it
+        Parent root = FXMLLoader.load(getClass().getResource(fxmlFile));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
 
     // Utility method to show alerts
     @SuppressWarnings("static-access")
@@ -403,4 +439,5 @@ public class UsersController {
         email.clear();
         password.clear();
     }
+
 }

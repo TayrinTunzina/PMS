@@ -12,6 +12,8 @@ public class Post {
 
     private int postId;
 
+    private String postLink;
+
     public int getPostId() {
         return postId;
     }
@@ -33,6 +35,14 @@ public class Post {
 
     public void setPostText(String postText) {
         this.postText = postText;
+    }
+
+    public String getPostLink() {
+        return postLink;
+    }
+
+    public void setPostLink(String postLink) {
+        this.postLink = postLink;
     }
 
     public LocalDateTime getDates() {
@@ -72,4 +82,5 @@ public class Post {
 
         return "Just now";
     }
+
 }

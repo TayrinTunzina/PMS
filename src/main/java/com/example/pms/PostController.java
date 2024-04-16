@@ -3,6 +3,7 @@ package com.example.pms;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -11,11 +12,13 @@ import javafx.scene.layout.HBox;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
+import java.util.ResourceBundle;
 
 import static com.example.pms.dbconnect.connection;
 
@@ -23,6 +26,9 @@ public class PostController {
 
     @FXML
     private Label postText;
+
+    @FXML
+    private Hyperlink postLink;
 
     @FXML
     private Label date;
@@ -61,6 +67,27 @@ public class PostController {
             deleteIcon.setVisible(true);
         } else {
             deleteIcon.setVisible(false);
+        }
+        postLink.setOnAction(event -> {
+            // Get the URL from the Hyperlink
+            String url = postLink.getText();
+
+            // Open the URL in Chrome
+            openChrome(url);
+        });
+
+    }
+
+
+    private void openChrome(String url) {
+        try {
+            // Specify the path to the Google Chrome executable
+            String chromePath = "C:/Program Files/Google/Chrome/Application/chrome.exe";
+            // Launch Google Chrome with the URL as an argument
+            ProcessBuilder pb = new ProcessBuilder(chromePath, url);
+            pb.start();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -244,6 +271,7 @@ public class PostController {
         postText.setText(post.getPostText());
         date.setText(post.getFormattedDate());
         likeCountLabel.setText(String.valueOf(post.getLikeCount()));
+        postLink.setText(post.getPostLink());
 
         try {
             // Convert the BLOB data to Image

@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -10,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="436.0" prefWidth="600.0" styleClass="card1" stylesheets="@../../../style/newsfeed.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pms.PostController">
+<VBox alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="464.0" prefWidth="600.0" styleClass="card1" stylesheets="@../../../style/newsfeed.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pms.PostController">
    <children>
       <HBox alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="552.0">
          <children>
@@ -39,6 +40,16 @@
             <Font name="Arial Bold" size="13.0" />
          </font>
       </Label>
+
+      <Hyperlink fx:id="postLink" prefHeight="17.0" prefWidth="556.0" text="https://example.com">
+         <VBox.margin>
+            <Insets bottom="4.0" />
+         </VBox.margin>
+         <font>
+            <Font name="Arial" size="13.0" />
+         </font>
+      </Hyperlink>
+
       <ImageView fx:id="postImage" fitHeight="313.0" fitWidth="569.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../img/post1.jpg" />
