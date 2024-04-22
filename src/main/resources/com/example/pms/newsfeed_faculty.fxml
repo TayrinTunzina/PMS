@@ -23,7 +23,7 @@
     <left>
         <VBox alignment="TOP_CENTER" prefHeight="706.0" prefWidth="217.0" style="-fx-background-color: #F0F2F5;" BorderPane.alignment="CENTER">
             <children>
-                <VBox alignment="CENTER" prefHeight="290.0" prefWidth="197.0" styleClass="card1" stylesheets="@../../../style/newsfeed.css">
+                <VBox alignment="CENTER" prefHeight="379.0" prefWidth="197.0" styleClass="card1" stylesheets="@../../../style/newsfeed.css">
                     <children>
                         <ImageView fitHeight="130.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -85,7 +85,36 @@
                             <font>
                                 <Font name="Arial" size="14.0" />
                             </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
                         </Label>
+                  <HBox alignment="CENTER" prefHeight="46.0" prefWidth="222.0" styleClass="card2" stylesheets="@../../../style/newsfeed.css">
+                     <children>
+                        <ImageView fitHeight="33.0" fitWidth="34.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../img/edit-profile.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#edit_profile" prefHeight="35.0" prefWidth="110.0" stylesheets="@../../../style/newsfeed.css" text="Edit Profile" textFill="WHITE">
+                           <font>
+                              <Font name="Arial Bold" size="12.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <VBox.margin>
+                        <Insets left="12.0" right="12.0" />
+                     </VBox.margin>
+                  </HBox>
                     </children>
                     <VBox.margin>
                         <Insets bottom="10.0" left="10.0" top="20.0" />
@@ -110,7 +139,7 @@
                                     </HBox.margin>
                                 </ImageView>
 
-                                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" stylesheets="@../../../style/newsfeed.css" text="View Winners" textFill="WHITE">
+                                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#courses" prefHeight="35.0" prefWidth="100.0" stylesheets="@../../../style/newsfeed.css" text="View Winners" textFill="WHITE">
                                     <font>
                                         <Font name="Arial Bold" size="12.0" />
                                     </font>
@@ -206,7 +235,10 @@
                         </Button>
                     </children>
                 </Pane>
-            <Button layoutX="992.0" layoutY="18.0" mnemonicParsing="false" onAction="#refresh" prefHeight="26.0" prefWidth="32.0" />
+            <Button layoutX="992.0" layoutY="18.0" mnemonicParsing="false" onAction="#refresh" prefHeight="26.0" prefWidth="32.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
             <ImageView fitHeight="22.0" fitWidth="30.0" layoutX="997.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../img/refresh.png" />

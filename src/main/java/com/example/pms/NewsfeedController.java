@@ -51,6 +51,7 @@ public class NewsfeedController implements Initializable {
     private Connection connection;
     private String loggedInUserId;
 
+
     @FXML
     private VBox posted;
     List<Post> posts;
@@ -69,6 +70,10 @@ public class NewsfeedController implements Initializable {
 
     @FXML
     private TextField linkTextField;
+
+    @FXML
+    private Button updateButton;
+
 
     @FXML
     private void handlechoosefilebtn(ActionEvent event) {
@@ -325,6 +330,16 @@ public class NewsfeedController implements Initializable {
     private Stage stage;
     private Scene scene;
     private Parent root;
+
+    @FXML
+    void edit_profile(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("editProfile.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
 
     @FXML
     void lab_component(ActionEvent event) throws IOException {

@@ -102,7 +102,7 @@
                               <Insets right="10.0" />
                            </HBox.margin>
                         </ImageView>
-                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="35.0" prefWidth="110.0" stylesheets="@../../../style/newsfeed.css" text="Edit Profile" textFill="WHITE">
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#edit_profile" prefHeight="35.0" prefWidth="110.0" stylesheets="@../../../style/newsfeed.css" text="Edit Profile" textFill="WHITE">
                            <font>
                               <Font name="Arial Bold" size="12.0" />
                            </font>

@@ -33,7 +33,7 @@
          </ImageView>
          <Pane layoutX="776.0" prefHeight="62.0" prefWidth="136.0" AnchorPane.rightAnchor="0.0">
             <children>
-               <Button alignment="CENTER" contentDisplay="CENTER" layoutX="9.0" layoutY="13.0" mnemonicParsing="false" onAction="#newsfeed" prefHeight="38.0" prefWidth="118.0" stylesheets="@../../../style/newsfeed.css" text="Back">
+               <Button alignment="CENTER" contentDisplay="CENTER" layoutX="9.0" layoutY="13.0" mnemonicParsing="false" onAction="#back" prefHeight="38.0" prefWidth="118.0" stylesheets="@../../../style/newsfeed.css" text="Back">
                   <font>
                      <Font name="Arial Bold" size="16.0" />
                   </font>
