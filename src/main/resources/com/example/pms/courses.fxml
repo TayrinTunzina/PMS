@@ -33,7 +33,7 @@
          </ImageView>
          <Pane layoutX="776.0" prefHeight="62.0" prefWidth="136.0" AnchorPane.rightAnchor="0.0">
             <children>
-               <Button alignment="CENTER" contentDisplay="CENTER" layoutX="9.0" layoutY="13.0" mnemonicParsing="false" onAction="#back" prefHeight="38.0" prefWidth="118.0" stylesheets="@../../../style/newsfeed.css" text="Back">
+               <Button alignment="CENTER" contentDisplay="CENTER" layoutX="9.0" layoutY="13.0" mnemonicParsing="false" onAction="#backn" prefHeight="38.0" prefWidth="118.0" stylesheets="@../../../style/newsfeed.css" text="Back">
                   <font>
                      <Font name="Arial Bold" size="16.0" />
                   </font>
@@ -87,10 +87,10 @@
                   <Image url="@../../../img/png7.png" />
                </image>
             </ImageView>
-                <ComboBox promptText="Select Trimester" style="-fx-font-size: 14px; -fx-padding: 5px;" styleClass="comboBox2" />
-                <Button alignment="CENTER" onAction="#viewWinners" style="-fx-background-color: #60717c; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 5px 10px;" text="View">
+                <ComboBox fx:id="aoopComboBox" onAction="#updateSelectedTrimester" promptText="Select Trimester" style="-fx-font-size: 14px; -fx-padding: 5px;" styleClass="comboBox2" />
+                <Button alignment="CENTER" contentDisplay="CENTER" onAction="#handleViewButtonAction" prefHeight="26.0" prefWidth="62.0" style="-fx-text-fill: white; -fx-padding: 5px 10px;" stylesheets="@../../../style/newsfeed.css" text="View">
                <font>
-                  <Font name="Arial" size="12.0" />
+                  <Font name="Arial Bold" size="14.0" />
                </font>
                <cursor>
                   <Cursor fx:constant="HAND" />
@@ -120,13 +120,13 @@
                   <Image url="@../../../img/png3.png" />
                </image>
             </ImageView>
-                <ComboBox promptText="Select Trimester" style="-fx-font-size: 14px; -fx-padding: 5px;" styleClass="comboBox2" />
-                <Button alignment="CENTER" onAction="#viewWinners" style="-fx-background-color: #60717c; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 5px 10px;" text="View">
+                <ComboBox fx:id="dbmsComboBox" onAction="#updateSelectedTrimester" promptText="Select Trimester" style="-fx-font-size: 14px; -fx-padding: 5px;" styleClass="comboBox2" />
+                <Button alignment="CENTER" contentDisplay="CENTER" onAction="#handleViewButtonAction" prefHeight="26.0" prefWidth="62.0" style="-fx-text-fill: white; -fx-padding: 5px 10px;" stylesheets="@../../../style/newsfeed.css" text="View">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
                <font>
-                  <Font name="Arial" size="12.0" />
+                  <Font name="Arial Bold" size="14.0" />
                </font>
                <VBox.margin>
                   <Insets top="10.0" />
@@ -135,7 +135,7 @@
         </VBox>
 
         <VBox GridPane.columnIndex="2">
-            <VBox alignment="TOP_CENTER" prefHeight="275.0" prefWidth="210.0" style="-fx-padding: 20px; -fx-border-radius: 10px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);" styleClass="card3" stylesheets="@../../../style/newsfeed.css">
+            <VBox fx:id="sad" alignment="TOP_CENTER" prefHeight="275.0" prefWidth="210.0" style="-fx-padding: 20px; -fx-border-radius: 10px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);" styleClass="card3" stylesheets="@../../../style/newsfeed.css">
             <Label text="SAD Laboratory">
                <font>
                   <Font name="Arial Bold" size="14.0" />
@@ -152,14 +152,17 @@
                   <Image url="@../../../img/png6.png" />
                </image>
             </ImageView>
-                <ComboBox promptText="Select Trimester" style="-fx-font-size: 14px; -fx-padding: 5px;" styleClass="comboBox2" />
-                <Button alignment="CENTER" onAction="#viewWinners" style="-fx-background-color: #60717c; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 5px 10px;" text="View">
+                <ComboBox fx:id="sadComboBox" onAction="#updateSelectedTrimester" promptText="Select Trimester" style="-fx-font-size: 14px; -fx-padding: 5px;" styleClass="comboBox2" />
+                <Button alignment="CENTER" contentDisplay="CENTER" onAction="#handleViewButtonAction" prefHeight="26.0" prefWidth="62.0" style="-fx-text-fill: white; -fx-padding: 5px 10px;" stylesheets="@../../../style/newsfeed.css" text="View">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
                <VBox.margin>
                   <Insets top="10.0" />
-               </VBox.margin></Button>
+               </VBox.margin>
+               <font>
+                  <Font name="Arial Bold" size="14.0" />
+               </font></Button>
             </VBox>
         </VBox>
 
@@ -182,14 +185,17 @@
                   <Image url="@../../../img/png2.png" />
                </image>
             </ImageView>
-                <ComboBox promptText="Select Trimester" style="-fx-font-size: 14px; -fx-padding: 5px;" styleClass="comboBox2" />
-                <Button alignment="CENTER" onAction="#viewWinners" style="-fx-background-color: #60717c; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 5px 10px;" text="View">
+                <ComboBox fx:id="electroComboBox" onAction="#updateSelectedTrimester" promptText="Select Trimester" style="-fx-font-size: 14px; -fx-padding: 5px;" styleClass="comboBox2" />
+                <Button alignment="CENTER" contentDisplay="CENTER" onAction="#handleViewButtonAction" prefHeight="26.0" prefWidth="62.0" style="-fx-text-fill: white; -fx-padding: 5px 10px;" stylesheets="@../../../style/newsfeed.css" text="View">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
                <VBox.margin>
                   <Insets top="10.0" />
-               </VBox.margin></Button>
+               </VBox.margin>
+               <font>
+                  <Font name="Arial Bold" size="14.0" />
+               </font></Button>
             </VBox>
         </VBox>
 
@@ -211,14 +217,17 @@
                   <Image url="@../../../img/png5.png" />
                </image>
             </ImageView>
-                <ComboBox promptText="Select Trimester" style="-fx-font-size: 14px; -fx-padding: 5px;" styleClass="comboBox2" />
-                <Button alignment="CENTER" onAction="#viewWinners" style="-fx-background-color: #60717c; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 5px 10px;" text="View">
+                <ComboBox fx:id="microComboBox" onAction="#updateSelectedTrimester" promptText="Select Trimester" style="-fx-font-size: 14px; -fx-padding: 5px;" styleClass="comboBox2" />
+                <Button alignment="CENTER" contentDisplay="CENTER" onAction="#handleViewButtonAction" prefHeight="26.0" prefWidth="62.0" style="-fx-text-fill: white; -fx-padding: 5px 10px;" stylesheets="@../../../style/newsfeed.css" text="View">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
                <VBox.margin>
                   <Insets top="10.0" />
-               </VBox.margin></Button>
+               </VBox.margin>
+               <font>
+                  <Font name="Arial Bold" size="14.0" />
+               </font></Button>
             </VBox>
         </VBox>
 
@@ -240,14 +249,17 @@
                   <Image url="@../../../img/png1.png" />
                </image>
             </ImageView>
-                <ComboBox promptText="Select Trimester" style="-fx-font-size: 14px; -fx-padding: 5px;" styleClass="comboBox2" />
-                <Button alignment="CENTER" onAction="#viewWinners" style="-fx-background-color: #60717c; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 5px 10px;" text="View">
+                <ComboBox fx:id="seComboBox" onAction="#updateSelectedTrimester" promptText="Select Trimester" style="-fx-font-size: 14px; -fx-padding: 5px;" styleClass="comboBox2" />
+                <Button alignment="CENTER" contentDisplay="CENTER" onAction="#handleViewButtonAction" prefHeight="26.0" prefWidth="62.0" style="-fx-text-fill: white; -fx-padding: 5px 10px;" stylesheets="@../../../style/newsfeed.css" text="View">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
                <VBox.margin>
                   <Insets top="10.0" />
-               </VBox.margin></Button>
+               </VBox.margin>
+               <font>
+                  <Font name="Arial Bold" size="14.0" />
+               </font></Button>
             </VBox>
         </VBox>
       <columnConstraints>

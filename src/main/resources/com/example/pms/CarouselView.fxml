@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.text.Font?>
+
+<VBox fx:id="vboxId" alignment="TOP_CENTER" prefHeight="762.0" prefWidth="972.0" spacing="20.0" stylesheets="@../../../style/newsfeed.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pms.WinnersController">
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+   <children>
+      <AnchorPane cacheShape="false" prefHeight="98.0" prefWidth="871.0" stylesheets="@../../../style/newsfeed.css">
+         <children>
+            <ImageView fitHeight="70.0" fitWidth="180.0" layoutX="1.0" layoutY="3.0" nodeOrientation="INHERIT" pickOnBounds="true" styleClass="logo">
+               <image>
+                  <Image url="@../../../img/logo.png" />
+               </image>
+               <effect>
+                  <Blend />
+               </effect>
+            </ImageView>
+            <Pane layoutX="776.0" prefHeight="62.0" prefWidth="136.0" AnchorPane.rightAnchor="0.0">
+               <children>
+                  <Button alignment="CENTER" contentDisplay="CENTER" layoutX="47.0" layoutY="13.0" mnemonicParsing="false" onAction="#back" prefHeight="38.0" prefWidth="80.0" stylesheets="@../../../style/newsfeed.css" text="Back">
+                     <font>
+                        <Font name="Arial Bold" size="16.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <styleClass>
+                        <String fx:value="navbar-button" />
+                        <String fx:value="navbar-button:hover" />
+                     </styleClass>
+                     <textFill>
+                        <LinearGradient endX="0.15909090863935876" endY="0.6666666775038748" startX="0.17045454093904205" startY="0.06060600280761719">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </textFill>
+                  </Button>
+               </children>
+            </Pane>
+            <Label alignment="CENTER" layoutX="360.0" layoutY="23.0" prefHeight="26.0" prefWidth="267.0" text="CSE Project Show" textFill="#333333">
+               <font>
+                  <Font name="Serif Bold" size="27.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="360.0" layoutY="61.0" prefHeight="24.0" prefWidth="267.0" text="Organized By Dept. of CSE, UIU" textFill="#ff8e00">
+               <font>
+                  <Font name="Serif Bold" size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <BorderPane fx:id="carouselPane" prefHeight="699.0" prefWidth="988.0">
+         <right>
+            <ImageView fitHeight="61.0" fitWidth="41.0" onMouseClicked="#handleRightArrowClick" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+               <image>
+                  <Image url="@../../../img/right-arrow.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+         </right>
+         <left>
+            <ImageView fitHeight="61.0" fitWidth="41.0" onMouseClicked="#handleLeftArrowClick" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+               <image>
+                  <Image url="@../../../img/left-arrow.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+         </left>
+         <center>
+            <HBox alignment="CENTER" prefHeight="533.0" prefWidth="895.0" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </BorderPane.margin>
+               <children>
+                  <GridPane fx:id="gridPane" alignment="CENTER" hgap="20.0" prefHeight="510.0" prefWidth="786.0" vgap="20.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <HBox.margin>
+                        <Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
+                     </HBox.margin>
+                     <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </padding>
+                  </GridPane>
+               </children>
+            </HBox>
+         </center>
+         <top>
+            <HBox alignment="TOP_CENTER" prefHeight="73.0" prefWidth="871.0" BorderPane.alignment="CENTER">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="78.0" prefWidth="685.0">
+                     <children>
+                        <Label fx:id="teamNameLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="23.0" prefWidth="197.0" text="Team Name">
+                           <font>
+                              <Font name="Arial Bold" size="20.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <HBox alignment="CENTER" prefHeight="42.0" prefWidth="686.0">
+                           <children>
+                              <Label fx:id="positionLabel" alignment="CENTER_RIGHT" prefHeight="23.0" prefWidth="224.0" text="Position">
+                                 <font>
+                                    <Font name="Arial Bold Italic" size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="23.0" prefWidth="17.0" text=".">
+                                 <font>
+                                    <Font name="Arial Bold" size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="courseNameLabel" prefHeight="23.0" prefWidth="230.0" text="Course Name">
+                                 <font>
+                                    <Font name="Arial Bold" size="20.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </top>
+         <bottom>
+            <HBox alignment="TOP_CENTER" prefHeight="56.0" prefWidth="972.0" BorderPane.alignment="CENTER">
+               <children>
+<!--                  <Button fx:id="projectDetailsButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="34.0" prefWidth="146.0" text="Project Details" textFill="WHITE">-->
+<!--                     <font>-->
+<!--                        <Font name="Arial Bold" size="15.0" />-->
+<!--                     </font>-->
+<!--                     <HBox.margin>-->
+<!--                        <Insets bottom="5.0" />-->
+<!--                     </HBox.margin>-->
+<!--                     <cursor>-->
+<!--                        <Cursor fx:constant="HAND" />-->
+<!--                     </cursor>-->
+<!--                  </Button>-->
+               </children>
+            </HBox>
+         </bottom>
+      </BorderPane>
+
+   </children>
+</VBox>

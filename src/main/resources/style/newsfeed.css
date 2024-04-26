@@ -146,5 +146,12 @@
     -fx-background-radius: 20;
 }
 
+#vboxId {
+    -fx-background-image: url('../img/bg2.jpg');
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+    -fx-background-position: center;
+}
+
 
 
