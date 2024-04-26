@@ -1,12 +1,11 @@
 package com.example.pms;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
 import java.sql.*;
 import java.util.*;
 
+import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,10 +19,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class WinnersController {
 
@@ -63,7 +66,19 @@ public class WinnersController {
     private Label courseNameLabel;
 
     @FXML
+    private Label studentIdLabel;
+    @FXML
+    private TextArea studentDetailsTextArea;
+    @FXML
+    private TextField facultyTextField;
+    @FXML
+    private TextArea featuresTextArea;
+    @FXML
     private AnchorPane sideBar;
+    @FXML
+    private Pane videoPane;
+    @FXML
+    private HBox controls;
 
     @FXML
     private GridPane gridPane; // Declare a reference to your GridPane
@@ -557,10 +572,211 @@ public class WinnersController {
 
 
 
-    public void initData(String projectId) {
-        // Retrieve project details based on the projectId
-        // Display the project details in the UI
+    public void initDta(String projectId) {
+        try {
+            String query = "SELECT w.team_name, w.position " +
+                    "FROM winners w " +
+                    "INNER JOIN project p ON w.project_id = p.p_id " +
+                    "WHERE p.p_id = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, projectId);
+            ResultSet resultSet = statement.executeQuery();
+
+            // Check if the result set has data
+            if (resultSet.next()) {
+                // Retrieve project details from the result set
+                String teamName = resultSet.getString("team_name");
+                String position = resultSet.getString("position");
+                String courseName = resultSet.getString("course_name");
+//                String facultyName = resultSet.getString("f_name");
+//                String studentId = resultSet.getString("s_id");
+//                String studentName = resultSet.getString("s_name");
+//                String features = resultSet.getString("features");
+//                byte[] videoData = resultSet.getBytes("video");
+
+                // Display the project details in the UI (e.g., update labels, text fields, etc.)
+                teamNameLabel.setText(teamName);
+                positionLabel.setText(position);
+                courseNameLabel.setText(courseName);
+            } else {
+                // Handle case when no data is retrieved for the given projectId
+                System.out.println("No project details found for projectId: " + projectId);
+            }
+
+            // Close the result set and statement
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle SQL exceptions
+        }
     }
+
+    public void initData(String projectId) {
+        try {
+            // Query to retrieve project details from the project table
+            String queryProjectDetails = "SELECT DISTINCT p.course_name, p.f_name, p.video, p.features " +
+                    "FROM project p " +
+                    "WHERE p.p_id = ?";
+            PreparedStatement statementProjectDetails = connection.prepareStatement(queryProjectDetails);
+            statementProjectDetails.setString(1, projectId);
+            ResultSet resultSetProjectDetails = statementProjectDetails.executeQuery();
+
+            // Check if the result set has data
+            if (resultSetProjectDetails.next()) {
+                // Retrieve project details from the result set
+                String courseName = resultSetProjectDetails.getString("course_name");
+                String facultyName = resultSetProjectDetails.getString("f_name");
+                String features = resultSetProjectDetails.getString("features");
+                byte[] videoData = resultSetProjectDetails.getBytes("video");
+                // Retrieve other project details (video, features)
+
+                courseNameLabel.setText(courseName);
+                facultyTextField.setText(facultyName);
+                featuresTextArea.setText(features);
+
+                displayVideo(videoData, videoPane);
+
+                // Now, continue with the existing code to retrieve winners' data from the winners table
+                String queryWinners = "SELECT w.team_name, w.position " +
+                        "FROM winners w " +
+                        "WHERE w.project_id = ?";
+                PreparedStatement statementWinners = connection.prepareStatement(queryWinners);
+                statementWinners.setString(1, projectId);
+                ResultSet resultSetWinners = statementWinners.executeQuery();
+
+                // Check if the result set has data
+                if (resultSetWinners.next()) {
+                    // Retrieve winners' data from the result set
+                    String teamName = resultSetWinners.getString("team_name");
+                    String position = resultSetWinners.getString("position");
+
+                    // Now, you can update your UI with the retrieved project and winners' details
+                    teamNameLabel.setText(teamName);
+                    positionLabel.setText(position);
+
+                } else {
+                    // Handle case when no winners' data is retrieved for the given projectId
+                    System.out.println("No winners found for projectId: " + projectId);
+                }
+
+                resultSetWinners.close();
+                statementWinners.close();
+
+                String queryStudentDetails = "SELECT s_id, s_name " +
+                        "FROM project p " +
+                        "WHERE p.p_id = ?";
+                PreparedStatement statementStudentDetails = connection.prepareStatement(queryStudentDetails);
+                statementStudentDetails.setString(1, projectId);
+                ResultSet resultSetStudentDetails = statementStudentDetails.executeQuery();
+
+                    // Retrieve project details from the result set
+                    StringBuilder studentDetails = new StringBuilder();
+
+                while (resultSetStudentDetails.next()) {
+                    String studentId = resultSetStudentDetails.getString("s_id");
+                    String studentName = resultSetStudentDetails.getString("s_name");
+
+                    // Append student name and ID to the StringBuilder
+                    studentDetails.append(studentName).append(" - ").append(studentId).append("\n");
+                }
+
+                // Set the concatenated student details in the text area
+                studentDetailsTextArea.setText(studentDetails.toString());
+
+
+                // Close result sets and statements
+                resultSetStudentDetails.close();
+                statementStudentDetails.close();
+            } else {
+                // Handle case when no project details are retrieved for the given projectId
+                System.out.println("No project details found for projectId: " + projectId);
+            }
+
+            // Close result sets and statements
+            resultSetProjectDetails.close();
+            statementProjectDetails.close();
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle SQL exceptions
+        }
+    }
+
+
+    private File createTempFile(byte[] data) {
+        File tempFile = null;
+        try {
+            // Create a temporary file
+            tempFile = File.createTempFile("tempVideo", ".mp4");
+
+            // Write the byte array data to the temporary file
+            FileOutputStream fos = new FileOutputStream(tempFile);
+            fos.write(data);
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return tempFile;
+    }
+
+
+    public void displayVideo(byte[] videoBytes, Pane videoPane) {
+        // Check if videoBytes is not null
+        if (videoBytes != null && videoBytes.length > 0) {
+            // Create a temporary file from the byte array
+            File tempFile = createTempFile(videoBytes);
+            if (tempFile != null) {
+                // Create a Media object from the temporary file
+                Media media = new Media(tempFile.toURI().toString());
+
+                // Create a MediaPlayer
+                MediaPlayer mediaPlayer = new MediaPlayer(media);
+
+                // Create a MediaView
+                MediaView mediaView = new MediaView(mediaPlayer);
+
+                // Add MediaView to the provided videoPane
+                videoPane.getChildren().add(mediaView);
+
+                // Create play/pause button
+                Button playPauseButton = new Button("Play");
+                playPauseButton.setOnAction(e -> {
+                    if (mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
+                        mediaPlayer.pause();
+                        playPauseButton.setText("Play");
+                    } else {
+                        mediaPlayer.play();
+                        playPauseButton.setText("Pause");
+                    }
+                });
+
+                // Create seek slider
+                Slider seekSlider = new Slider();
+                seekSlider.setMaxWidth(Double.MAX_VALUE);
+                mediaPlayer.currentTimeProperty().addListener((observable, oldValue, newValue) -> {
+                    seekSlider.setValue(newValue.toSeconds());
+                });
+                seekSlider.setOnMousePressed(e -> mediaPlayer.pause());
+                seekSlider.setOnMouseReleased(e -> mediaPlayer.seek(Duration.seconds(seekSlider.getValue())));
+
+                // Add play/pause button and seek slider to the existing HBox named "controls"
+                HBox controls = (HBox) videoPane.lookup("#controls");
+                if (controls != null) {
+                    controls.getChildren().addAll(playPauseButton, seekSlider);
+                } else {
+                    System.out.println("Failed to find HBox with id 'controls' in the provided videoPane.");
+                }
+
+                // Play the video
+                mediaPlayer.play();
+            } else {
+                System.out.println("Failed to create temporary file.");
+            }
+        } else {
+            System.out.println("Video data is empty or null.");
+        }
+    }
+
+
+
 
 
 
