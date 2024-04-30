@@ -5,12 +5,18 @@ import java.net.URL;
 import java.sql.*;
 import java.util.*;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.RotateTransition;
+import javafx.animation.Timeline;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Point3D;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -25,6 +31,7 @@ import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -277,6 +284,80 @@ public class WinnersController {
     }
 
 
+    public class StudentAchievement {
+        private String studentId;
+        private String courseName;
+        private String position;
+
+        public StudentAchievement(String studentId, String courseName, String position) {
+            this.studentId = studentId;
+            this.courseName = courseName;
+            this.position = position;
+        }
+
+        // Getters and setters for studentId, courseName, and position
+        public String getStudentId() {
+            return studentId;
+        }
+
+        public void setStudentId(String studentId) {
+            this.studentId = studentId;
+        }
+
+        public String getCourseName() {
+            return courseName;
+        }
+
+        public void setCourseName(String courseName) {
+            this.courseName = courseName;
+        }
+
+        public String getPosition() {
+            return position;
+        }
+
+        public void setPosition(String position) {
+            this.position = position;
+        }
+    }
+
+    private List<StudentAchievement> retrieveStudentAchievements(String studentId) {
+        List<StudentAchievement> studentAchievements = new ArrayList<>();
+
+        // Query your database to retrieve achievements for the selected student
+        try {
+            String query = "SELECT project.course_name, winners.position " +
+                    "FROM winners " +
+                    "JOIN project ON winners.project_id = project.p_id " +
+                    "WHERE project.s_id = ?";
+
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, studentId);
+            ResultSet resultSet = statement.executeQuery();
+
+            // Populate the list of achievements with course names and positions
+            while (resultSet.next()) {
+                String courseName = resultSet.getString("course_name");
+                String position = resultSet.getString("position");
+
+                // Create a new StudentAchievement object
+                StudentAchievement achievement = new StudentAchievement(studentId, courseName, position);
+
+                // Add the achievement to the list
+                studentAchievements.add(achievement);
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // Return the list of student achievements
+        return studentAchievements;
+    }
+
+
     private void populateCarousel(List<Winner> winnersList) {
         if (winnersList == null || winnersList.isEmpty()) {
             // If there are no winners, display a message or handle it accordingly
@@ -323,8 +404,10 @@ public class WinnersController {
             String studentId = currentWinner.getStudentIds().get(i);
             byte[] studentPicture = currentWinner.getStudentPictures().get(i);
 
-            // Create a new AnchorPane for each student card
-            AnchorPane studentCard = createStudentCard(studentName, studentId, studentPicture);
+            // Inside the loop in the populateCarousel method
+            List<StudentAchievement> studentAchievements = retrieveStudentAchievements(studentId); // Fetch student achievements for the current student
+            AnchorPane studentCard = createStudentCard(studentName, studentId, studentPicture, studentAchievements);
+
 
             // Add the student card to the grid pane at the current row and column
             gridPane.add(studentCard, colIndex, rowIndex);
@@ -346,7 +429,7 @@ public class WinnersController {
             }
         }
 
-// Create project details button
+        // Create project details button
         Button projectDetailsButton = new Button("Project Details");
         projectDetailsButton.setAlignment(Pos.CENTER);
         projectDetailsButton.setContentDisplay(ContentDisplay.CENTER);
@@ -376,16 +459,15 @@ public class WinnersController {
 
 
     // Method to create a student card
-
-    private AnchorPane createStudentCard(String studentName, String studentId, byte[] studentPicture) {
+    private AnchorPane createStudentCard(String studentName, String studentId, byte[] studentPicture, List<StudentAchievement> achievements) {
         AnchorPane studentCard = new AnchorPane();
         studentCard.setPrefSize(120, 200); // Adjust the size as needed
         studentCard.setStyle("-fx-background-radius: 25; -fx-background-color: linear-gradient( to right top,#facd68, #fc76b3);");
 
-        // Create a StackPane to center the content
-        StackPane contentPane = new StackPane();
-        contentPane.setAlignment(Pos.CENTER);
-        contentPane.setPrefSize(studentCard.getPrefWidth(), studentCard.getPrefHeight());
+        // Create front side content
+        VBox frontVBox = new VBox(2); // Vertical spacing between nodes
+        frontVBox.setAlignment(Pos.BOTTOM_CENTER); // Center nodes vertically
+        frontVBox.setPadding(new Insets(15, 0, 15, 0)); // Add bottom padding of 10 pixels
 
         // Create student picture
         ImageView pictureView = new ImageView(new Image(new ByteArrayInputStream(studentPicture)));
@@ -394,30 +476,80 @@ public class WinnersController {
 
         // Create student id label
         Label idLabel = new Label(studentId);
-        idLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 12pt;"); // Apply styles
+        idLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 12pt; -fx-font-family: Serif"); // Apply styles
 
         // Create student name label
         Label nameLabel = new Label(studentName);
         nameLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14pt;"); // Apply styles
 
-        // Add nodes to content pane
-        VBox vbox = new VBox(10); // Vertical spacing between nodes
-        vbox.getChildren().addAll(pictureView, idLabel, nameLabel);
-        vbox.setAlignment(Pos.CENTER); // Center nodes vertically
+        // Add nodes to front side content pane
+        frontVBox.getChildren().addAll(pictureView, idLabel, nameLabel);
 
-        contentPane.getChildren().add(vbox);
+        // Create back side content
+        VBox backVBox = new VBox(2); // Vertical spacing between nodes
+        backVBox.setAlignment(Pos.CENTER); // Center nodes vertically
+        backVBox.setPadding(new Insets(0, 0, 10, 0)); // Add bottom padding of 10 pixels
 
-        // Center the content pane within the student card
+        // Create achievements label
+        Label achievementsLabel = new Label("Achievements:");
+        achievementsLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 12pt; -fx-font-family: Serif; -fx-underline: true;");
+
+        // Add the label to the back side content pane
+        backVBox.getChildren().add(achievementsLabel);
+
+        // Iterate over the achievements and create labels for each achievement
+        for (StudentAchievement achievement : achievements) {
+            String achievementText = " ~ " + achievement.getCourseName() + " - " + achievement.getPosition();
+            Label achievementLabel = new Label(achievementText);
+            achievementLabel.setStyle("-fx-font-size: 10pt;");
+            // Set the preferred width of the label
+            achievementLabel.setPrefWidth(200); // Adjust width as needed
+
+            // Set wrapText property to true
+            achievementLabel.setWrapText(true);
+            backVBox.getChildren().add(achievementLabel);
+        }
+
+        // Create a StackPane to overlay both sides
+        StackPane contentPane = new StackPane();
+        contentPane.setAlignment(Pos.CENTER);
+        contentPane.setPrefSize(studentCard.getPrefWidth(), studentCard.getPrefHeight());
+
+        // Add front and back sides to the StackPane
+        contentPane.getChildren().addAll(frontVBox, backVBox);
+        backVBox.setVisible(false); // Initially, show only the front side
+
+        // Position the StackPane within the AnchorPane
         AnchorPane.setTopAnchor(contentPane, 0.0);
         AnchorPane.setRightAnchor(contentPane, 0.0);
         AnchorPane.setBottomAnchor(contentPane, 0.0);
         AnchorPane.setLeftAnchor(contentPane, 0.0);
 
-        // Add content pane to student card
-        studentCard.getChildren().add(contentPane);
+        // Create and configure the button
+        Button flipButton = new Button();
+        flipButton.setPrefSize(20, 20); // Set preferred size for the button
+        flipButton.setCursor(Cursor.HAND); // Set cursor to hand cursor
+        flipButton.setLayoutX(studentCard.getPrefWidth() - flipButton.getPrefWidth()); // Adjust the position as needed
+        flipButton.setLayoutY(5); // Adjust the position as needed
+
+        // Create and set the image for the button
+        ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream("/img/refresh.png")));
+        imageView.setFitWidth(15); // Set the width of the image
+        imageView.setFitHeight(16); // Set the height of the image
+        flipButton.setGraphic(imageView); // Set the image as the graphic of the button
+
+        // Add action handler to the button for flip transition
+        flipButton.setOnAction(event -> {
+            frontVBox.setVisible(!frontVBox.isVisible());
+            backVBox.setVisible(!backVBox.isVisible());
+        });
+
+        studentCard.getChildren().addAll(contentPane, flipButton);
 
         return studentCard;
     }
+
+
 
 
     // Event handler for the left arrow

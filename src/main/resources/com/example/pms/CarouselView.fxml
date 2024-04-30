@@ -130,7 +130,7 @@
          <top>
             <HBox alignment="TOP_CENTER" prefHeight="73.0" prefWidth="871.0" BorderPane.alignment="CENTER">
                <children>
-                  <VBox alignment="CENTER" prefHeight="78.0" prefWidth="685.0">
+                  <VBox alignment="CENTER" prefHeight="74.0" prefWidth="945.0">
                      <children>
                         <Label fx:id="teamNameLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="23.0" prefWidth="197.0" text="Team Name">
                            <font>
@@ -140,9 +140,9 @@
                               <Insets bottom="5.0" />
                            </VBox.margin>
                         </Label>
-                        <HBox alignment="CENTER" prefHeight="42.0" prefWidth="686.0">
+                        <HBox alignment="CENTER" prefHeight="42.0" prefWidth="914.0">
                            <children>
-                              <Label fx:id="positionLabel" alignment="CENTER_RIGHT" prefHeight="23.0" prefWidth="224.0" text="Position">
+                              <Label fx:id="positionLabel" alignment="CENTER_RIGHT" prefHeight="23.0" prefWidth="451.0" text="Position">
                                  <font>
                                     <Font name="Arial Bold Italic" size="20.0" />
                                  </font>
@@ -152,7 +152,7 @@
                                     <Font name="Arial Bold" size="20.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="courseNameLabel" prefHeight="23.0" prefWidth="230.0" text="Course Name">
+                              <Label fx:id="courseNameLabel" prefHeight="23.0" prefWidth="498.0" text="Course Name">
                                  <font>
                                     <Font name="Arial Bold" size="20.0" />
                                  </font>
