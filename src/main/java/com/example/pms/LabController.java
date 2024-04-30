@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -64,10 +65,19 @@ public class LabController implements Initializable {
     private Image image;
     private MyListener myListener;
 
+    @FXML
+    private TextField searchField;
     private Lab chosenComponent;
+
+    private String loggedInUserId;
+
+    public void setLoggedInUserId(String userId) {
+        this.loggedInUserId = userId;
+    }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Establish database connection
+
+        loggedInUserId = UserService.getLoggedInUserId();
         connection = dbconnect.getConnection();
 
         // Fetch components from the database
@@ -113,12 +123,81 @@ public class LabController implements Initializable {
         }
     }
 
+    @FXML
+    void searchComponents(ActionEvent event) {
+        // Fetch components based on the search query
+        components = fetchComponentsFromDatabase();
+
+        // Clear the existing components from the grid
+        grid.getChildren().clear();
+
+        // Set up the chosen component and listener
+        if (!components.isEmpty()) {
+            setChosenComponent(components.get(0));
+            myListener = component -> setChosenComponent(component);
+        }
+
+        int column = 0;
+        int row = 1;
+        try {
+            for (Lab component : components) {
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("component.fxml"));
+                AnchorPane anchorPane = fxmlLoader.load();
+
+                ComponentController componentController = fxmlLoader.getController();
+                componentController.setData(component, myListener);
+
+                if (column == 3) {
+                    column = 0;
+                    row++;
+                }
+
+                grid.add(anchorPane, column++, row); //(child,column,row)
+                //set grid width
+                grid.setMinWidth(Region.USE_COMPUTED_SIZE);
+                grid.setPrefWidth(Region.USE_COMPUTED_SIZE);
+                grid.setMaxWidth(Region.USE_PREF_SIZE);
+
+                //set grid height
+                grid.setMinHeight(Region.USE_COMPUTED_SIZE);
+                grid.setPrefHeight(Region.USE_COMPUTED_SIZE);
+                grid.setMaxHeight(Region.USE_PREF_SIZE);
+
+                GridPane.setMargin(anchorPane, new Insets(10));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     private List<Lab> fetchComponentsFromDatabase() {
         List<Lab> components = new ArrayList<>();
 
-        // Example: Fetch components from a database
-        try (PreparedStatement statement = connection.prepareStatement("SELECT components.*, users.email FROM components JOIN users ON components.s_id = users.user_id");
-             ResultSet resultSet = statement.executeQuery()) {
+        try {
+            connection = dbconnect.getConnection();
+
+            String query = "SELECT components.*, users.email " +
+                    "FROM components " +
+                    "LEFT JOIN users ON components.s_id = users.user_id " +
+                    "WHERE users.user_id IS NULL OR users.user_id != ?";
+
+
+            // Check if there is a search query
+            if (searchField.getText() != null && !searchField.getText().isEmpty()) {
+                query += " AND components.name LIKE ?";
+            }
+
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, loggedInUserId);
+
+            // If search query is present, set the parameter
+            if (searchField.getText() != null && !searchField.getText().isEmpty()) {
+                statement.setString(2, "%" + searchField.getText() + "%");
+            }
+
+            ResultSet resultSet = statement.executeQuery();
 
             int colorIndex = 0;
             String[] colorScheme = {"6A7324", "A7745B", "F16C31", "291D36", "22371D", "FB5D03", "80080C", "FFB605", "5F060E", "E7C00F"}; // Provided color scheme
@@ -144,12 +223,16 @@ public class LabController implements Initializable {
                 colorIndex++;
                 components.add(component);
             }
+
+            resultSet.close();
+            statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
         return components;
     }
+
 
     private void setChosenComponent(Lab component) {
         chosenComponent = component;

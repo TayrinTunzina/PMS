@@ -20,7 +20,7 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" prefHeight="703.0" prefWidth="871.0" spacing="20.0" style="-fx-background-color: #f0f2f5;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pms.WinnersController">
+<VBox alignment="TOP_CENTER" prefHeight="703.0" prefWidth="871.0" spacing="20.0" style="-fx-background-color: linear-gradient(to top, #ffecd2 0%, #fcb69f 100%);" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pms.WinnersController">
    <AnchorPane cacheShape="false" prefHeight="58.0" prefWidth="1315.0" styleClass="logo-container" stylesheets="@../../../style/newsfeed.css">
       <children>
          <ImageView fitHeight="56.0" fitWidth="177.0" layoutX="1.0" layoutY="3.0" nodeOrientation="INHERIT" pickOnBounds="true" styleClass="logo">
@@ -67,7 +67,7 @@
    </AnchorPane>
 
     <!-- GridPane for Cards -->
-    <GridPane alignment="TOP_CENTER" hgap="40.0" prefHeight="621.0" prefWidth="827.0" style="-fx-padding: 20px;" vgap="30.0">
+    <GridPane alignment="TOP_CENTER" hgap="40.0" prefHeight="621.0" prefWidth="850.0" style="-fx-padding: 20px;" vgap="30.0">
 
         <!-- First Row -->
         <VBox>

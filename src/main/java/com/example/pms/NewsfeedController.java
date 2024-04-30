@@ -440,6 +440,25 @@ public class NewsfeedController implements Initializable {
     }
 
     @FXML
+    void chat(ActionEvent event) throws IOException {
+        System.out.println("Logged-in User ID before navigating to ChatController: " + loggedInUserId); // Debug line
+
+        // Load the chat.fxml file
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("chat.fxml"));
+        Parent root = loader.load();
+
+        // Pass the logged-in user's ID to the ChatController
+        ChatController controller = loader.getController();
+        controller.setLoggedInUserId(loggedInUserId);
+
+        // Create a new stage for the chat window
+        Stage chatStage = new Stage();
+        chatStage.setTitle("Chat Window");
+        chatStage.setScene(new Scene(root));
+        chatStage.show();
+    }
+
+    @FXML
     void back(ActionEvent event) throws IOException {
         String fxmlFile;
         // Get the role of the logged-in user from UserService

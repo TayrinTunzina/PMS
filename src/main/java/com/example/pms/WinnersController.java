@@ -462,7 +462,7 @@ public class WinnersController {
     private AnchorPane createStudentCard(String studentName, String studentId, byte[] studentPicture, List<StudentAchievement> achievements) {
         AnchorPane studentCard = new AnchorPane();
         studentCard.setPrefSize(120, 200); // Adjust the size as needed
-        studentCard.setStyle("-fx-background-radius: 25; -fx-background-color: linear-gradient( to right top,#facd68, #fc76b3);");
+        studentCard.setStyle("-fx-background-radius: 25; -fx-background-color: linear-gradient(to top, #e6b980 0%, #eacda3 70%, #ffffff 100%);");
 
         // Create front side content
         VBox frontVBox = new VBox(2); // Vertical spacing between nodes
@@ -906,15 +906,6 @@ public class WinnersController {
             System.out.println("Video data is empty or null.");
         }
     }
-
-
-
-
-
-
-
-
-
 
 
 
