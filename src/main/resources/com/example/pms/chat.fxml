@@ -16,9 +16,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.paint.Color?>
-<?import javafx.scene.paint.LinearGradient?>
-<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="599.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pms.ChatController">
@@ -33,38 +30,7 @@
                   <Blend />
                </effect>
             </ImageView>
-            <Pane layoutX="776.0" prefHeight="62.0" prefWidth="136.0" AnchorPane.rightAnchor="0.0">
-               <children>
-                  <Button alignment="CENTER" contentDisplay="CENTER" layoutX="79.0" layoutY="12.0" mnemonicParsing="false" onAction="#closeChat" prefHeight="14.0" prefWidth="42.0" stylesheets="@../../../style/newsfeed.css" text="X">
-                     <font>
-                        <Font name="Arial Bold" size="14.0" />
-                     </font>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <styleClass>
-                        <String fx:value="navbar-button" />
-                        <String fx:value="navbar-button:hover" />
-                     </styleClass>
-                     <textFill>
-                        <LinearGradient endX="0.8522727701700095" endY="0.4999999530387646" startX="1.0">
-                           <stops>
-                              <Stop>
-                                 <color>
-                                    <Color red="1.0" green="1.0" blue="1.0" />
-                                 </color>
-                              </Stop>
-                              <Stop offset="1.0">
-                                 <color>
-                                    <Color />
-                                 </color>
-                              </Stop>
-                           </stops>
-                        </LinearGradient>
-                     </textFill>
-                  </Button>
-               </children>
-            </Pane>
+            <Pane layoutX="776.0" prefHeight="62.0" prefWidth="136.0" AnchorPane.rightAnchor="0.0" />
          </children>
       </AnchorPane>
       <Separator prefHeight="14.0" prefWidth="680.0" />
@@ -119,24 +85,26 @@
                   <Insets left="10.0" right="10.0" top="20.0" />
                </padding>
             </VBox>
-          <AnchorPane layoutX="189.0" layoutY="3.0" minHeight="0.0" minWidth="0.0" prefHeight="526.0" prefWidth="490.0">
+            <AnchorPane layoutX="189.0" layoutY="3.0" minHeight="0.0" minWidth="0.0" prefHeight="526.0" prefWidth="490.0">
                <children>
-                  <ScrollPane layoutX="18.4" layoutY="53.0" prefHeight="402.0" prefWidth="447.0" style="-fx-background-radius: 20; -fx-border-color: #ff8000; -fx-border-radius: 7;" AnchorPane.leftAnchor="18.0" AnchorPane.rightAnchor="25.0">
+                  <ScrollPane fx:id="messageScrollPane" layoutX="18.4" layoutY="53.0" prefHeight="402.0" prefWidth="447.0" style="-fx-background-radius: 20; -fx-border-color: #ff8000; -fx-border-radius: 7;" AnchorPane.leftAnchor="18.0" AnchorPane.rightAnchor="25.0">
                      <content>
-                        <VBox fx:id="messageContainer" alignment="TOP_CENTER" prefHeight="398.0" prefWidth="426.0" style="-fx-background-radius: 8;" />
+                        <VBox fx:id="messageContainer" alignment="TOP_CENTER" prefHeight="398.0" prefWidth="426.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 10px;">
+                        </VBox>
                      </content>
                   </ScrollPane>
+
                   <Label layoutX="194.0" layoutY="14.0" text="Messages">
                      <font>
                         <Font name="Cooper Black" size="24.0" />
                      </font>
                   </Label>
-                  <TextField layoutX="19.0" layoutY="471.0" prefHeight="40.0" prefWidth="374.0" promptText="Enter Your Message" style="-fx-background-radius: 20;">
+                  <TextField fx:id="messageField" layoutX="19.0" layoutY="471.0" prefHeight="40.0" prefWidth="374.0" promptText="Enter Your Message" style="-fx-background-radius: 20;">
                      <font>
                         <Font name="Arial" size="14.0" />
                      </font>
                   </TextField>
-                  <Button alignment="CENTER" contentDisplay="CENTER" layoutX="401.0" layoutY="474.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="66.0" styleClass="navbar-button" stylesheets="@../../../style/newsfeed.css">
+                  <Button fx:id="sendButton" alignment="CENTER" contentDisplay="CENTER" layoutX="401.0" layoutY="474.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="66.0" styleClass="navbar-button" stylesheets="@../../../style/newsfeed.css">
                      <font>
                         <Font name="Arial Bold" size="14.0" />
                      </font>
@@ -151,6 +119,7 @@
                   </ImageView>
                </children>
             </AnchorPane>
+
          </children>
       </AnchorPane>
    </children>

@@ -443,6 +443,9 @@ public class NewsfeedController implements Initializable {
     void chat(ActionEvent event) throws IOException {
         System.out.println("Logged-in User ID before navigating to ChatController: " + loggedInUserId); // Debug line
 
+        // Start the chat server
+        startChatServer();
+
         // Load the chat.fxml file
         FXMLLoader loader = new FXMLLoader(getClass().getResource("chat.fxml"));
         Parent root = loader.load();
@@ -457,6 +460,15 @@ public class NewsfeedController implements Initializable {
         chatStage.setScene(new Scene(root));
         chatStage.show();
     }
+
+    private void startChatServer() {
+        // Start the chat server in a new thread
+        new Thread(() -> {
+            ChatServer.main(new String[]{});
+        }).start();
+    }
+
+
 
     @FXML
     void back(ActionEvent event) throws IOException {
